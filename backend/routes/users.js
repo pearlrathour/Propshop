@@ -4,13 +4,13 @@ const passport = require('passport');
 const users = require('../controllers/users');
 const user = require('../models/user');
 
-router.route('/usersignup')
+router.route('/user/signup')
     // .get(users.renderUserSignup)
-    .post(users.usersignup);
+    .post(users.signup);
 
 
-router.route('/signin')
-    .post(passport.authenticate('local', { failureRedirect: '/' }), users.signin);
+router.route('/user/signin')
+    .post(passport.authenticate('local', { failureRedirect: '/user/signin' }), users.signin);
 
 // router.get('/singout', users.signout)
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser= require('body-parser');
 const path = require("path");
+const cors= require("cors");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -8,12 +9,26 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const {PORT, DB_URL} = require('./config');
 const User = require("./models/user");
-const users = require('./controllers/users');
 const userRoutes = require("./routes/users");
+const salonRoutes = require("./routes/salons");
 
 const app = express();
+const corsOpts = {
+  origin: '*',
+
+  methods: [
+    'GET',
+    'POST',
+  ],
+
+  allowedHeaders: [
+    'Content-Type',
+  ],
+};
+app.use(cors(corsOpts));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+// app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 const sessionConfig = {
   secret: "Our Lil secret",
@@ -40,18 +55,12 @@ mongoose.connect(process.env.DB_URL)
   .then(() => {console.log("Conn succ")})
   .catch((err) => console.log("No conn", err));
 
-
 app.use("/", userRoutes);
+app.use("/", salonRoutes);
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
-
-// app.get("/usersignup", (req,res)=>{
-//   console.log("123");
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 // });
-
-// app.post("/usersignup", users.usersignup);
 
 app.listen(process.env.Port, function () {
   console.log("Server started on port 4000")

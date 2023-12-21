@@ -1,27 +1,19 @@
 const User = require("../models/user");
 
-// module.exports.renderUserSignup = (req, res) => {
-//   console.log("sdhjk")
-//   res.render("usersignup");
-// };
-
-module.exports.usersignup = async (req, res) => {
+module.exports.signup = async (req, res) => {
   try {
     const { username, email, contactno, password } = req.body;
+    console.log(req.body);
     const user = new User({ username, email, contactno});
     await User.register(user, password);
-    res.redirect("/");
+    return {success: true};
   } 
   catch (e) {
     console.log(e)
     // req.flash("error", e.message);
-    res.redirect("/usersignup");
+    return {success: false}
   }
 };
-
-// module.exports.renderSignin = (req, res) => {
-//   res.render("users/signin");
-// };
 
 module.exports.signin = (req, res) => {
   console.log("Welcome");
