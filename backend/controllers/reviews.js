@@ -1,12 +1,12 @@
-const Salon = require("../models/salon");
+const Business = require("../models/business");
 const Review = require("../models/review");
 
 module.exports.createReview = async (req, res) => {
-  const salon = await Salon.findById(req.params.id);
+  const business = await Business.findById(req.params.id);
   const review = new Review(req.body.review);
-  review.author = req.user._id;
-  salon.reviews.push(review);
+  business.author = req.user._id;
+  business.reviews.push(review);
   await review.save();
-  await salon.save();
-  res.redirect(`/home/${salon._id}`);
+  await business.save();
+  res.redirect(`/business/${business._id}`);
 };

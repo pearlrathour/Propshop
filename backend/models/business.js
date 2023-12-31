@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
-const SalonSchema = new Schema({
+const BusinessSchema = new Schema({
   username: {
     type: String,
     required: true
@@ -26,14 +26,20 @@ const SalonSchema = new Schema({
     required: true
   },
   description: String,
+  services: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Service",
+    },
+  ],
   reviews: [
     {
       type: Schema.Types.ObjectId,
       ref: "Review",
     },
-  ],
+  ]
 });
 
-SalonSchema.plugin(passportLocalMongoose);
+BusinessSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('Salon', SalonSchema);
+module.exports = mongoose.model('Business', BusinessSchema);

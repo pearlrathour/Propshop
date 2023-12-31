@@ -1,8 +1,9 @@
 import React from "react";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
 
 export default function UserSignup() {
-  let navigate = useNavigate()
+  let navigate = useNavigate();
+  const { id } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ export default function UserSignup() {
         contactno: e.target.elements.contactno.value, 
         password: e.target.elements.password.value })
     });
-    navigate("/home");
+    navigate(`/user/${id}`);
     
     // console.log(response);
     // const json = await response.json();

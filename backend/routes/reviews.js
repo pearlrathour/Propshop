@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Salon = require('../models/salon');
+const Business = require('../models/business');
 const Review = require('../models/review');
 const reviews = require('../controllers/reviews');
 
