@@ -9,9 +9,18 @@ router.route("/business/signup")
     .post(business.signup);
 
 router.route('/business/signin')
-    .post(passport.authenticate('local', { failureRedirect: '/business/signin' }), business.signin);
+    .post(business.signin);
+
+router.route('/business/addservice')
+    .post(business.createService);
 
 router.route('/business/myservices')
-    .post(business.signin);
+    .post(business.fetchService);
+
+router.route('/business/myservices/:id')
+    .post(business.fetchServiceProfile);
+
+router.route('/business/deleteservice')
+    .post(business.removeService);
 
 module.exports = router;

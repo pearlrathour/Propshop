@@ -10,7 +10,7 @@ router.route('/user/signup')
 
 
 router.route('/user/signin')
-    .post(passport.authenticate('local', { failureRedirect: '/user/signin' }), users.signin);
+    .post(users.signin);
 
 // router.get('/singout', users.signout)
 

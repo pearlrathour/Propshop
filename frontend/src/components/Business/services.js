@@ -1,21 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "./card";
+import { useBusinessStore } from '../../store';
 
 export default function Services() {
-    let data = [];
+    const [services, setServices] = useState([]);
+    const { businessId } = useBusinessStore();
 
     useEffect(() => {
         async function loadData() {
-            data = await fetch("http://localhost:4000/business/myservices");
+            const response = await fetch('http://localhost:4000/business/myservices', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: businessId
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setServices(data);
+            }
         }
-    },[]);
-    
+        loadData();
+    }, [businessId]);
+
     return (
-        <div className="flex flex-row flex-wrap px-10 justify-start items-start gap-x-[7%] text-3xl bg-red-500 text-gray-400 my-[2%]">
-            <Link to="/business/service/${id}" className="basis-1/4 cursor-pointer bg-gray-500">
-                <Card />
-            </Link>
+        <div className="flex flex-row flex-wrap px-10 justify-start items-start text-3xl text-gray-400">
+            {services.map((service) => (
+                <Link key={service._id} to={`/business/myservices/${service._id}`} className="basis-1/4 cursor-pointer">
+                    <Card service={service} />
+                </Link>
+            ))}
         </div>
     );
 };

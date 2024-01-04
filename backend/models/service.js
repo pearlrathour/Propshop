@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const DateSlotSchema = new Schema({
     startDate: {
-        type: Date,
+        type: String,
         required: true,
     },
     endDate: {
-        type: Date,
+        type: String,
         required: true,
         validate: {
             validator: function (value) {
@@ -36,7 +36,7 @@ const TimeSlotSchema = new Schema({
 });
 
 const ServiceSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true
     },

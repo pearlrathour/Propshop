@@ -26,17 +26,17 @@ export default function Sidebar() {
                 </div>
             </div> */}
 
-            <div className="flex flex-col justify-start items-start h-full sm:w-64 bg-gray-800">
+            <div className="flex flex-col justify-start items-start h-full sm:w-64 bg-slate-100">
                 <div className="xl:flex justify-start p-6 items-center space-x-3">
                     <img className="w-11 h-11" src={"https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"} alt="" />
                     <p className="text-3xl font-semibold leading-6 text-blue-600 hover:text-blue-700">Propshop</p>
                 </div>
                 <div className="mt-6 flex flex-col justify-start items-center w-full border-gray-600 border-b pl-9 space-y-3 pb-5 ">
-                    <button className="flex jusitfy-start items-center space-x-5 w-full text-white">
+                    <button className="flex jusitfy-start items-center space-x-5 w-full text-gray-700">
                         <Squares2X2Icon className="h-6 w-6" />
                         <p className="text-lg leading-4">Dashboard</p>
                     </button>
-                    <button className="flex jusitfy-start items-center w-full space-x-5 text-white">
+                    <button className="flex jusitfy-start items-center w-full space-x-5 text-gray-700">
                         <UserIcon className="h-6 w-6" />
                         <p className="text-lg leading-4 ">Users</p>
                     </button>

@@ -19,7 +19,7 @@ export default function UserSignup() {
         contactno: e.target.elements.contactno.value, 
         password: e.target.elements.password.value })
     });
-    navigate(`/user/${id}`);
+    navigate('/user/home');
     
     // console.log(response);
     // const json = await response.json();

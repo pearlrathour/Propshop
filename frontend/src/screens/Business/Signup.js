@@ -24,7 +24,7 @@ export default function UserSignup() {
           description: e.target.elements.description.value,
           password: e.target.elements.password.value })
       });
-      navigate(`/business/myservices`);
+      navigate("/business/myservices");
       
       // console.log(response);
       // const json = await response.json();

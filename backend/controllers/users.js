@@ -15,12 +15,37 @@ module.exports.signup = async (req, res) => {
   }
 };
 
-module.exports.signin = (req, res) => {
-  console.log("Welcome");
-  console.log(req.session.returnTo);
-  const redirectUrl = req.session.returnTo || "/";
-  delete req.session.returnTo;
-  res.redirect(redirectUrl);
+module.exports.signin = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+
+    if (!user)
+      return res.json({ success: false, message: 'Incorrect email' });
+
+    const authenticated = await new Promise((resolve) => {
+      user.authenticate(password, (err, authenticated) => {
+        if (err) {
+          console.error('Error during authentication:', err);
+          resolve(false);
+        }
+
+        resolve(authenticated);
+      });
+    });
+
+    if (!authenticated)
+      return res.json({ success: false, message: 'Incorrect password' });
+
+    const id = user._id;
+    const redirectUrl = req.session.returnTo || "/";
+    delete req.session.returnTo;
+    res.json({ success: true, id, redirectUrl });
+  }
+  catch (error) {
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 };
 
 // module.exports.singout = (req, res) => {

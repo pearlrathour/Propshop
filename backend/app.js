@@ -9,6 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const {PORT, DB_URL} = require('./config');
 const User = require("./models/user");
+const Business = require("./models/business");
 const userRoutes = require("./routes/users");
 const businessRoutes = require("./routes/business");
 
@@ -46,8 +47,12 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy(Business.authenticate()));
 
+passport.serializeUser(Business.serializeUser());
+passport.deserializeUser(Business.deserializeUser());
+
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

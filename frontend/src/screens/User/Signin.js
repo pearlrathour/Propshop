@@ -18,7 +18,7 @@ export default function UserSignup() {
           email: e.target.elements.email.value,
           password: e.target.elements.password.value })
       });
-      navigate(`/user/${id}`);
+      navigate('/user/home');
       
       // console.log(response);
       // const json = await response.json();
