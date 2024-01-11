@@ -50,9 +50,9 @@ module.exports.signin = async (req, res) => {
 };
 
 module.exports.createService = async (req, res) => {
-  const { id, name, image, price, location, description, date, timeslots } = req.body;
+  const { id, name, image, price, description, date, timeslots } = req.body;
   const business = await Business.findById(id);
-  const service = new Service({ name, image, price, location, description, date, timeslots });
+  const service = new Service({ name, image, price, description, date, timeslots });
   business.services.push(service);
   await service.save();
   await business.save();
@@ -62,7 +62,6 @@ module.exports.fetchService = async (req, res) => {
   const { id } = req.body;
   const business = await Business.findById(id).populate('services');
   res.json(business.services);
-  // res.json({Hello});
 };
 
 module.exports.fetchServiceProfile = async (req, res) => {
@@ -81,6 +80,20 @@ module.exports.removeService = async (req, res) => {
     res.json({success: true});
   } 
   catch (error) {
+    res.json({ success: false});
+  }
+};
+
+module.exports.updateService = async (req, res) => {
+  console.log("bjkb")
+  const {name, image, price, description, date, timeslots, businessId, serviceId} = req.body;
+  try {
+  await Service.findOneAndUpdate({ _id: serviceId},{$set:{name:name, image:image, price:price, description:description, date:date, timeslots:timeslots}});
+
+    res.json({success: true});
+  } 
+  catch (error) {
+    console.log(error);
     res.json({ success: false});
   }
 };

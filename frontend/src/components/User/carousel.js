@@ -1,63 +1,68 @@
-import React, { useState } from "react";
-import Swipe from "react-easy-swipe";
+import { useState, useEffect } from "react";
+import {
+    BsFillArrowRightCircleFill,
+    BsFillArrowLeftCircleFill,
+} from "react-icons/bs";
 
 export default function Carousel() {
-    const CarouselData = [
-        {   
-            index: 1,
-            image:
-                "https://images.unsplash.com/photo-1546768292-fb12f6c92568?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
-        },
-        {
-            index: 2,
-            image:
-                "https://images.unsplash.com/photo-1501446529957-6226bd447c46?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1489&q=80",
-        },
-        {
-            index:3,
-            image:
-                "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80",
-        },
-        {   
-            index: 4,
-            image:
-                "https://images.unsplash.com/photo-1475189778702-5ec9941484ae?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1351&q=80",
-        },
-        {
-            index: 5,
-            image:
-                "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80",
-        },
-    ];
-    
-    const [currentSlide, setCurrentSlide] = useState(0);
+    const [current, setCurrent] = useState(0);
 
-    const handleSwipe = (direction) => {
-        if (direction === "left") {
-          setCurrentSlide((prevSlide) =>
-            prevSlide === 0 ? CarouselData.length - 1 : prevSlide - 1
-          );
-        } else if (direction === "right") {
-          setCurrentSlide((prevSlide) =>
-            prevSlide === CarouselData.length - 1 ? 0 : prevSlide + 1
-          );
-        }
-      };
+    const previousSlide = () => {
+        setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    };
+
+    const nextSlide = () => {
+        setCurrent((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+    };
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            nextSlide();
+        }, 2000);
+
+        return () => clearInterval(intervalId);
+    }, [current]);
+
+    const slides = [
+        "https://i.pinimg.com/originals/51/82/ac/5182ac536727d576c78a9320ac62de30.jpg",
+        "https://wallpapercave.com/wp/wp3386769.jpg",
+        "https://wallpaperaccess.com/full/809523.jpg",
+        "https://getwallpapers.com/wallpaper/full/5/c/0/606489.jpg",
+        "https://wallpapercave.com/wp/wp12396581.jpg",
+        "https://wallpapercave.com/wp/wp11784737.jpg",
+        "https://wallpapercave.com/wp/wp12412919.jpg",
+        "https://wallpapercave.com/wp/wp5502431.jpg",
+        "https://wallpapercave.com/wp/wp7495679.jpg",
+    ];
 
     return (
-        <div className="w-full shadow-2xl">
-            <Swipe onSwipeLeft={() => handleSwipe("left")} onSwipeRight={() => handleSwipe("right")}>
-                <div className="max-w-lg h-60 flex overflow-hidden relative">
-                    {CarouselData.map((slide, index) => (
-                        <img
-                            key={index}
-                            src={slide.image}
-                            alt="This is a carousel slide"
-                            className={index === currentSlide ? "block w-full h-auto object-cover" : "hidden"}
-                        />
-                    ))}
-                </div>
-            </Swipe>
+        <div className="overflow-hidden relative">
+            <div className={`flex transition ease-out duration-40`} style={{ transform: `translateX(-${current * 100}%)` }}>
+                {slides.map((s, index) => (
+                    <img key={index} src={s} alt={`Slide ${index + 1}`} />
+                ))}
+            </div>
+
+            <div className="absolute top-0 h-full w-full justify-between items-center flex text-white px-10 text-3xl">
+                <button onClick={previousSlide}>
+                    <BsFillArrowLeftCircleFill />
+                </button>
+                <button onClick={nextSlide}>
+                    <BsFillArrowRightCircleFill />
+                </button>
+            </div>
+
+            {/* <div className="absolute bottom-0 py-4 flex justify-center gap-3 w-full">
+                {slides.map((s, i) => (
+                    <div
+                        onClick={() => {
+                            setCurrent(i);
+                        }}
+                        key={"circle" + i}
+                        className={`rounded-full w-5 h-5 cursor-pointer  ${i === current ? "bg-white" : "bg-gray-500"}`}
+                    ></div>
+                ))}
+            </div> */}
         </div>
     );
-};
+}

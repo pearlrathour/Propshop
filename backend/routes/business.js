@@ -23,4 +23,7 @@ router.route('/business/myservices/:id')
 router.route('/business/deleteservice')
     .post(business.removeService);
 
+router.route('/business/updateservice')
+    .post(business.updateService);
+
 module.exports = router;

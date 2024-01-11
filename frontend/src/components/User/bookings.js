@@ -4,8 +4,8 @@ import { ClockIcon, MapPinIcon } from '@heroicons/react/24/solid';
 
 export default function Bookings() {
     return (
-        <div className="my-10 px-20 flex flex-col justify-start items-center">
-            <div className="text-lg font-medium py-6">
+        <div className="px-20 flex flex-col justify-start items-center">
+            <div className="text-lg font-semibold py-10">
                 Pending Appointments
             </div>
             <div className="grid grid-cols-3 grid-rows-1 gap-10 ">
