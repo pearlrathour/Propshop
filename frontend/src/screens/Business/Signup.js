@@ -1,16 +1,15 @@
 import React from "react";
 import { useNavigate, Link, useParams } from 'react-router-dom';
-
+import {useBusinessStore} from '../../store';
 
 export default function UserSignup() {
     let navigate = useNavigate();
-    const { id } = useParams();
-    console.log(useParams());
+    const {businessId, setBusiness}= useBusinessStore();
   
     const handleSubmit = async (e) => {
       e.preventDefault();
       
-      fetch("http://localhost:4000/business/signup", {
+      const response= await fetch("http://localhost:4000/business/signup", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -24,7 +23,14 @@ export default function UserSignup() {
           description: e.target.elements.description.value,
           password: e.target.elements.password.value })
       });
-      navigate("/business/myservices");
+      const j = await response.json();
+      if (j.success) {
+        setBusiness(j.id);
+        navigate("/business/myservices");
+      }
+      else {
+        console.log("Business Signin Error");
+      }
       
       // console.log(response);
       // const json = await response.json();

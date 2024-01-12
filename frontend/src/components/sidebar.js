@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useBusinessStore } from '../store';
 import { Squares2X2Icon, SquaresPlusIcon, ChevronDownIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon, CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import '../index.css';
 
 export default function Sidebar() {
+    let navigate = useNavigate();
     const [isSortDropdownOpen, setSortDropdownOpen] = useState(false);
     const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false);
-    const [services, setServices] = useState([]);
-    const { businessId } = useBusinessStore();
+    const { businessId, clearBusiness } = useBusinessStore();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [dateSlot, setDateSlot] = useState({ startDate: '', endDate: '' });
     const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '' }]);
@@ -79,6 +80,26 @@ export default function Sidebar() {
         setTimeSlots(updatedTimeSlots);
     };
 
+    const handleLogout = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:4000/business/signout", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const j = await response.json();
+        if (j.success) {
+            clearBusiness();
+            console.log(businessId);
+            navigate("/");
+        }
+        else {
+            alert("Unable to Logout!!!");
+        }
+    };
+
     return (
         <div className="h-screen w-[18%]">
             {/* <div className="xl:hidden flex justify-between h-screen w-full p-6 items-center ">
@@ -115,11 +136,11 @@ export default function Sidebar() {
                                 <Squares2X2Icon className="h-6 w-6" />
                                 <Link to="/business/myservices" className="text-lg">My Services</Link>
                             </button>
-                            <button className="flex jusitfy-start items-center w-full space-x-5 text-gray-600 font-medium hover:text-gray-900" type="button" onClick={handleDrawerToggle} data-drawer-target="drawer-form" data-drawer-show="drawer-form" aria-controls="drawer-form">
+                            <button className={`flex jusitfy-start items-center w-full space-x-5 font-medium text-lg hover:text-gray-900 ${drawerOpen ? "text-black" : "text-gray-600"}`} type="button" onClick={handleDrawerToggle} data-drawer-target="drawer-form" data-drawer-show="drawer-form" aria-controls="drawer-form">
                                 <SquaresPlusIcon className="h-6 w-6" />
-                                <p className="text-lg">Add Service</p>
+                                <p>Add Service</p>
                             </button>
-                            <div id="drawer-form" className={`fixed top-0 right-0 z-40 h-screen w-[27%] p-4 overflow-y-auto transition-transform ${drawerOpen ? "translate-x-0" : "-translate-x-1/4"} bg-gray-200 w-1/3`} tabIndex="-1" aria-labelledby="drawer-form-label" >
+                            <div id="drawer-form" className={`fixed top-0 right-0 z-40 h-screen w-[27%] p-4 overflow-y-auto transition-transform ${drawerOpen ? "translate-x-0" : "translate-x-full"} bg-gray-200 w-1/3`} tabIndex="-1" aria-labelledby="drawer-form-label" >
                                 <h5 id="drawer-label" className="inline-flex items-center mb-4 text-base font-semibold text-gray-700 uppercase">
                                     <CalendarDaysIcon className="h-5 w-5 mr-2" />
                                     New Service
@@ -172,7 +193,8 @@ export default function Sidebar() {
                             </div>
                         </div>
                         <div className="px-[9%] py-2.5 relative border-gray-400 border-b">
-                            <button className="text-gray-700 font-medium text-lg flex justify-between items-center w-full" type="button" id="SortDropdownButton" onClick={toggleSortDropdown} >
+                            <button className={`flex justify-between items-center w-full font-medium text-lg ${isSortDropdownOpen ? "text-black" : "text-gray-600"}
+    `} type="button" id="SortDropdownButton" onClick={toggleSortDropdown} >
                                 <div>Sort By</div>
                                 <ChevronDownIcon className="h-6 w-6" />
                             </button>
@@ -187,7 +209,7 @@ export default function Sidebar() {
                             )}
                         </div>
                         <div className="px-[9%] py-2.5 relative border-gray-400 border-b">
-                            <button className="text-gray-700 font-medium text-lg flex justify-between items-center w-full space-x-5" type="button" id="SearchDropdownButton" onClick={toggleSearchDropdown}>
+                            <button className={`text-gray-700 font-medium text-lg flex justify-between items-center w-full space-x-5 ${isSearchDropdownOpen ? "text-black" : "text-gray-600"}`} type="button" id="SearchDropdownButton" onClick={toggleSearchDropdown}>
                                 <div>Search</div>
                                 <ChevronDownIcon className="h-6 w-6" />
                             </button>
@@ -208,11 +230,15 @@ export default function Sidebar() {
                             <img className="w-full h-full object-cover" src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcg4Y51XjQ-zSf87X4nUPTQzsF83eFdZswTg&usqp=CAU"} alt="" />
                         </div>
                         <div className="text-base font-semibold text-gray-600">Business Name</div>
-                        <Cog6ToothIcon className="h-7 w-7" />
+                        <Cog6ToothIcon className="h-7 w-7 gear-rotate" />
                     </div>
-                    <div className="flex justify-start px-[5%] py-2 items-center space-x-7 text-base text-gray-700">
-                        <ArrowRightOnRectangleIcon className="h-6 w-6" />
-                        <div>Logout</div>
+                    <div className=" px-[5%] py-2 items-center text-base font-medium text-gray-700 hover:text-rose-400 cursor-pointer">
+                        <form onSubmit={handleLogout}>
+                            <button type="submit" className="flex justify-start space-x-7 ">
+                                <ArrowRightOnRectangleIcon className="h-6 w-6" />
+                                <div>Logout</div>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

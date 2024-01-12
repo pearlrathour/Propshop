@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const Business = require("../models/business");
-const Service= require("../models/service");
+const Service = require("../models/service");
 const business = require("../controllers/business");
 
 router.route("/business/signup")
@@ -10,6 +10,9 @@ router.route("/business/signup")
 
 router.route('/business/signin')
     .post(business.signin);
+
+router.route('/business/signout')
+    .post(business.signout);
 
 router.route('/business/addservice')
     .post(business.createService);

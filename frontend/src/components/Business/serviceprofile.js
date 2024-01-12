@@ -138,7 +138,7 @@ export default function Card() {
                             Edit
                         </button>
 
-                        <div id="drawer-form" className={`fixed top-0 left-0 z-40 h-screen w-[27%] p-4 overflow-y-auto transition-transform ${drawerOpen ? "translate-x-0" : "-translate-x-full"} bg-gray-200 w-1/3`} tabIndex="-1" aria-labelledby="drawer-form-label" >
+                        <div id="drawer-form" className={`fixed top-0 right-0 z-40 h-screen w-[23%] p-6 overflow-y-auto transition-transform ${drawerOpen ? "translate-x-0" : "translate-x-full"} bg-gray-200 w-[30%]`} tabIndex="-1" aria-labelledby="drawer-form-label" >
                             <h5 id="drawer-label" className="inline-flex items-center mb-4 text-base font-semibold text-gray-700 uppercase">
                                 <CalendarDaysIcon className="h-5 w-5 mr-2" />
                                 New Service
@@ -187,7 +187,7 @@ export default function Card() {
                                         </button>
                                     </div>
                                     <button type="submit" className="text-white justify-center flex items-center bg-blue-600 hover:bg-blue-700 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
-                                        Add Service</button>
+                                        Update Service</button>
                                 </form>
                             )}
                         </div>

@@ -5,14 +5,13 @@ module.exports.signup = async (req, res) => {
   try {
     const { username, email, contactno, location, image, description, password } = req.body;
     const business = new Business({ username, email, contactno, location, image, description });
-    console.log(req.body);
-    await Business.register(business, password);
-    return { success: true };
+    const registeredBusiness = await Business.register(business, password);
+    const id = registeredBusiness._id;
+    res.json({success: true,id});
   }
   catch (e) {
     console.log(e);
-    // req.flash("error", e.message);
-    res.redirect("/business/signup");
+    res.json({success: false});
   }
 };
 
@@ -49,6 +48,16 @@ module.exports.signin = async (req, res) => {
   }
 };
 
+module.exports.signout = (req, res) => {
+  req.logout(function (err) {
+    if (err) { 
+      console.log(err);
+      res.json({ success: false }); 
+    }
+    res.json({ success: true });
+  });
+};
+
 module.exports.createService = async (req, res) => {
   const { id, name, image, price, description, date, timeslots } = req.body;
   const business = await Business.findById(id);
@@ -65,35 +74,35 @@ module.exports.fetchService = async (req, res) => {
 };
 
 module.exports.fetchServiceProfile = async (req, res) => {
-  const { businessId, serviceId} = req.body;
-  const service= await Service.findById(serviceId);
+  const { businessId, serviceId } = req.body;
+  const service = await Service.findById(serviceId);
   res.json(service);
 };
 
 module.exports.removeService = async (req, res) => {
-  const { businessId, serviceId} = req.body;
-  
+  const { businessId, serviceId } = req.body;
+
   try {
     await Service.findOneAndDelete({ _id: serviceId });
     await Business.findByIdAndUpdate(businessId, { $pull: { services: serviceId } });
 
-    res.json({success: true});
-  } 
+    res.json({ success: true });
+  }
   catch (error) {
-    res.json({ success: false});
+    res.json({ success: false });
   }
 };
 
 module.exports.updateService = async (req, res) => {
   console.log("bjkb")
-  const {name, image, price, description, date, timeslots, businessId, serviceId} = req.body;
+  const { name, image, price, description, date, timeslots, businessId, serviceId } = req.body;
   try {
-  await Service.findOneAndUpdate({ _id: serviceId},{$set:{name:name, image:image, price:price, description:description, date:date, timeslots:timeslots}});
+    await Service.findOneAndUpdate({ _id: serviceId }, { $set: { name: name, image: image, price: price, description: description, date: date, timeslots: timeslots } });
 
-    res.json({success: true});
-  } 
+    res.json({ success: true });
+  }
   catch (error) {
     console.log(error);
-    res.json({ success: false});
+    res.json({ success: false });
   }
 };

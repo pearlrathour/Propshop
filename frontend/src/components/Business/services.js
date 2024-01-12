@@ -2,76 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "./card";
 import { useBusinessStore } from '../../store';
-import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 export default function Services() {
-    let navigate = useNavigate();
     const [services, setServices] = useState([]);
     const { businessId } = useBusinessStore();
-    const [drawerOpen, setDrawerOpen] = useState(false);
-    const [dateSlot, setDateSlot] = useState({ startDate: '', endDate: '' });
-    const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '' }]);
 
-    const handleDrawerToggle = () => {
-        setDrawerOpen(!drawerOpen);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        console.log({
-            id: businessId,
-            name: e.target.elements.name.value,
-            image: e.target.elements.image.value,
-            price: e.target.elements.price.value,
-            description: e.target.elements.description.value,
-            date: dateSlot,
-            timeslots: timeSlots,
-        })
-        const response = await fetch("http://localhost:4000/business/addservice", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                id: businessId,
-                name: e.target.elements.name.value,
-                image: e.target.elements.image.value,
-                price: e.target.elements.price.value,
-                description: e.target.elements.description.value,
-                date: dateSlot,
-                timeslots: timeSlots
-            })
-        });
-        setDrawerOpen(!drawerOpen);
-        navigate("/business/myservices");
-    };
-
-    const handleDateChange = (field, value) => {
-        const updatedDateSlot = { ...dateSlot };
-        updatedDateSlot[field] = value;
-        setDateSlot(updatedDateSlot);
-    };
-
-    const addTimeSlot = () => {
-        if (timeSlots.length === 0)
-            setTimeSlots([...timeSlots, { startTime: '', endTime: '' }])
-        else {
-            const s = timeSlots[timeSlots.length - 1].startTime;
-            const e = timeSlots[timeSlots.length - 1].endTime;
-            if (s !== "" && e != "")
-                setTimeSlots([...timeSlots, { startTime: '', endTime: '' }])
-            else
-                alert("Please select start and end time of slot")
-        }
-    };
-
-    const handleTimeChange = (index, field, value) => {
-        const updatedTimeSlots = [...timeSlots];
-        updatedTimeSlots[index][field] = value;
-        setTimeSlots(updatedTimeSlots);
-    };
-
+    console.log(businessId);
     useEffect(() => {
         async function loadData() {
             const response = await fetch('http://localhost:4000/business/myservices', {
@@ -93,12 +29,22 @@ export default function Services() {
     }, [services.length]);
 
     return (
-        <div className="w-full flex flex-row flex-wrap px-10 py-6 justify-start items-start text-3xl text-gray-400">
-            {services.map((service) => (
-                <Link key={service._id} to={`/business/myservices/${service._id}`} className="basis-1/4 cursor-pointer">
-                    <Card service={service} />
-                </Link>
-            ))}
+        <div className={`w-full flex flex-row flex-wrap mx-10 py-6 justify-start items-start text-3xl text-gray-400 ${services.length ? "" : "bg-slate-200"}`}>
+            {services.length > 0 ? (
+                services.map((service) => (
+                    <Link key={service._id} to={`/business/myservices/${service._id}`} className="basis-1/4 cursor-pointer">
+                        <Card service={service} />
+                    </Link>
+                ))
+            ) : (
+                <div className="h-screen w-full flex flex-col justify-start items-center py-[15%] text-center text-gray-500">
+                    <div className="flex flex-row py-4">
+                        <div className="text-3xl pr-4">: )</div>
+                        <div>No services found.</div>
+                    </div>
+                    <div className="text-xl font-medium pl-9">Add your first service now!</div>
+                </div>
+            )}
         </div>
     );
 };

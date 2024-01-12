@@ -1,3 +1,17 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@layer base {
+    html {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+}
+
+.gear-rotate {
+    transition: transform 0.3s ease-in-out;
+}
+
+.gear-rotate:hover {
+    transform: rotate(60deg);
+}
