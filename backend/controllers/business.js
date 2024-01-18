@@ -7,7 +7,7 @@ module.exports.signup = async (req, res) => {
     const business = new Business({ username, email, contactno, location, image, description });
     const registeredBusiness = await Business.register(business, password);
     const id = registeredBusiness._id;
-    res.json({success: true,id});
+    res.json({success: true, id});
   }
   catch (e) {
     console.log(e);
@@ -58,6 +58,24 @@ module.exports.signout = (req, res) => {
   });
 };
 
+module.exports.fetchInfo = async (req, res) => {
+  const { businessId } = req.body;
+  const business = await Business.findById(businessId);
+  res.json(business);
+};
+
+module.exports.updateInfo = async (req, res) => {
+  const { businessId, username, email, contactno, location, image, description } = req.body;
+  try {
+    await Business.findOneAndUpdate({ _id: businessId }, { $set: { username: username, email: email, contactno: contactno, location: location, image: image, description: description} });
+    res.json({ success: true });
+  }
+  catch (error) {
+    console.log(error);
+    res.json({ success: false });
+  }
+};
+
 module.exports.createService = async (req, res) => {
   const { id, name, image, price, description, date, timeslots } = req.body;
   const business = await Business.findById(id);
@@ -94,7 +112,6 @@ module.exports.removeService = async (req, res) => {
 };
 
 module.exports.updateService = async (req, res) => {
-  console.log("bjkb")
   const { name, image, price, description, date, timeslots, businessId, serviceId } = req.body;
   try {
     await Service.findOneAndUpdate({ _id: serviceId }, { $set: { name: name, image: image, price: price, description: description, date: date, timeslots: timeslots } });

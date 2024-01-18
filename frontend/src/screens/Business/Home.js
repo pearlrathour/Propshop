@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/Business/sidebar';
 import Services from "../../components/Business/services";
 
 export default function Home() {

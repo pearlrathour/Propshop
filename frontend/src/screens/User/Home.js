@@ -1,5 +1,5 @@
 import React from "react";
-import Sidebar from '../../components/sidebar';
+import Sidebar from '../../components/User/sidebar';
 import Carousel from "../../components/User/carousel";
 import Bookings from "../../components/User/bookings";
 

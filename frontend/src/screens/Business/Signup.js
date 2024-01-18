@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import {useBusinessStore} from '../../store';
 
-export default function UserSignup() {
+export default function BusinessSignup() {
     let navigate = useNavigate();
     const {businessId, setBusiness}= useBusinessStore();
   
@@ -21,27 +21,18 @@ export default function UserSignup() {
           location: e.target.elements.location.value,
           image: e.target.elements.image.value,
           description: e.target.elements.description.value,
-          password: e.target.elements.password.value })
+          password: e.target.elements.password.value 
+        })
       });
       const j = await response.json();
+      console.log(j);
       if (j.success) {
         setBusiness(j.id);
         navigate("/business/myservices");
       }
       else {
-        console.log("Business Signin Error");
+        console.log("Business Signup Error");
       }
-      
-      // console.log(response);
-      // const json = await response.json();
-      // console.log("Hello",json);
-      // if (json.success) {
-      //   // localStorage.setItem('token', json.authToken);
-      //   navigate("/home");
-      // }
-      // else {
-      //   console.log("Err");
-      // }
     }
   
     return (

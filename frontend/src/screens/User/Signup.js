@@ -1,38 +1,36 @@
 import React from "react";
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useUserStore } from '../../store';
 
 export default function UserSignup() {
   let navigate = useNavigate();
-  const { id } = useParams();
+  const { userId, userName, email, contactNo, setUser } = useUserStore();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    fetch("http://localhost:4000/user/signup", {
+
+    const response = await fetch("http://localhost:4000/user/signup", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ 
-        username: e.target.elements.username.value, 
-        email: e.target.elements.email.value, 
-        contactno: e.target.elements.contactno.value, 
-        password: e.target.elements.password.value })
+      body: JSON.stringify({
+        username: e.target.elements.username.value,
+        email: e.target.elements.email.value,
+        contactno: e.target.elements.contactno.value,
+        password: e.target.elements.password.value
+      })
     });
-    navigate('/user/home');
-    
-    // console.log(response);
-    // const json = await response.json();
-    // console.log("Hello",json);
-    // if (json.success) {
-    //   // localStorage.setItem('token', json.authToken);
-    //   navigate("/home");
-    // }
-    // else {
-    //   console.log("Err");
-    // }
+    const j = await response.json();
+    if (j.success) {
+      setUser(j.id, j.username, j.email, j.contactno);
+      navigate("/user/myapppointments");
+    }
+    else {
+      console.log("User Signup Error");
+    }
   }
-
+  
   return (
     <div className="bg-gray-400 dark:bg-slate-100">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Sidebar from '../sidebar';
+import Sidebar from '../../components/User/sidebar';
 import { UserCircleIcon } from '@heroicons/react/24/solid';
 
 export default function Card() {

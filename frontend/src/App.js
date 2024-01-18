@@ -9,7 +9,6 @@ import BusinessHome from './screens/Business/Home';
 import UserHome from './screens/User/Home';
 import ServiceProfile from './components/Business/serviceprofile';
 // import Bookings from './components/bookings'
-import Filter from './screens/User/Filter';
 import Service from './components/User/service'
 
 export default function App() {
@@ -24,9 +23,9 @@ export default function App() {
             <Route exact path="/business/myservices/:id" element={<ServiceProfile />} />
             <Route exact path="/user/signup" element={<UserSignup />} />
             <Route exact path="/user/signin" element={<UserSignin />} />
-            <Route exact path="/user/home" element={<UserHome />} />
+            <Route exact path="/user/myapppointments" element={<UserHome />} />
             {/* <Route exact path="/user/bookings" element={<Bookings />} /> */}
-            <Route exact path="/user/filter" element={<Filter />} />
+            {/* <Route exact path="/user/filter" element={<Filter />} /> */}
             <Route exact path="/user/service" element={<Service />} />
           </Routes>
       </Router>

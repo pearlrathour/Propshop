@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBusinessStore } from '../../store';
-import Sidebar from '../sidebar';
+import Sidebar from '../../components/Business/sidebar';
 import { UserCircleIcon, CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/solid';
 
 export default function Card() {

@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import {useBusinessStore} from '../../store';
 
-export default function UserSignup() {
+export default function BusinessSignin() {
     let navigate = useNavigate();
     const {businessId, setBusiness}= useBusinessStore();
 
@@ -18,12 +18,9 @@ export default function UserSignup() {
           email: e.target.elements.email.value,
           password: e.target.elements.password.value })
       });
-      console.log(response);
       const j = await response.json();
-      console.log(j)
       if (j.success) {
         setBusiness(j.id);
-        console.log(businessId);
         navigate("/business/myservices");
       }
       else {
