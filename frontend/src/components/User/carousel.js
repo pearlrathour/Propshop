@@ -5,7 +5,28 @@ import {
 } from "react-icons/bs";
 
 export default function Carousel() {
+    const [services, setServices] = useState([]);
     const [current, setCurrent] = useState(0);
+
+    useEffect(() => {
+        async function loadServices() {
+            const response = await fetch('http://localhost:4000/user/services', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const j = await response.json();
+            if (j.success) {
+                setServices(j.data);
+            }
+        }
+        loadServices();
+    }, []);
+
+    const itemsPerPage = 4;
+    const totalPages = Math.ceil(services.length / itemsPerPage);
 
     const previousSlide = () => {
         setCurrent((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
@@ -18,28 +39,26 @@ export default function Carousel() {
     useEffect(() => {
         const intervalId = setInterval(() => {
             nextSlide();
-        }, 2000);
+        }, 4000);
 
         return () => clearInterval(intervalId);
     }, [current]);
 
-    const slides = [
-        "https://i.pinimg.com/originals/51/82/ac/5182ac536727d576c78a9320ac62de30.jpg",
-        "https://wallpapercave.com/wp/wp3386769.jpg",
-        "https://wallpaperaccess.com/full/809523.jpg",
-        "https://getwallpapers.com/wallpaper/full/5/c/0/606489.jpg",
-        "https://wallpapercave.com/wp/wp12396581.jpg",
-        "https://wallpapercave.com/wp/wp11784737.jpg",
-        "https://wallpapercave.com/wp/wp12412919.jpg",
-        "https://wallpapercave.com/wp/wp5502431.jpg",
-        "https://wallpapercave.com/wp/wp7495679.jpg",
-    ];
+    const slides = Array.from({ length: totalPages }, (_, index) =>
+        services.slice(index * itemsPerPage, (index + 1) * itemsPerPage)
+    );
 
     return (
-        <div className="overflow-hidden relative">
-            <div className={`flex transition ease-out duration-40`} style={{ transform: `translateX(-${current * 100}%)` }}>
-                {slides.map((s, index) => (
-                    <img key={index} src={s} alt={`Slide ${index + 1}`} />
+        <div className="overflow-hidden relative h-[50%] bg-green-100">
+            <div className={`flex flex-row h-full transition ease-out duration-40`} style={{ transform: `translateX(-${current * 100}%)` }}>
+                {slides.map((slide, index) => (
+                    <div key={index} className="flex h-full w-full">
+                        {slide.map((s, innerIndex) => (
+                            <div key={innerIndex} className="h-full w-[25%] border border-gray-400 shadow-xl">
+                                <img className="h-full w-full object-cover" src={s.image} alt={`Slide ${index + 1}`} />
+                            </div>
+                        ))}
+                    </div>
                 ))}
             </div>
 

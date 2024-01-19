@@ -17,7 +17,7 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    services: []
+    appointments: []
 });
 
 UserSchema.plugin(passportLocalMongoose);

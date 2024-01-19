@@ -7,7 +7,6 @@ export default function Services() {
     const [services, setServices] = useState([]);
     const { businessId } = useBusinessStore();
 
-    console.log(businessId);
     useEffect(() => {
         async function loadData() {
             const response = await fetch('http://localhost:4000/business/myservices', {

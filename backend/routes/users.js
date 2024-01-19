@@ -13,4 +13,13 @@ router.route('/user/signin')
 router.route('/user/signout')
     .post(users.signout);
 
+router.route('/user/updateinfo')
+    .post(users.updateInfo);
+
+router.route('/user/services')
+    .post(users.fetchServices);
+
+router.route('/user/appointments')
+    .post(users.fetchAppointments);
+
 module.exports = router;
