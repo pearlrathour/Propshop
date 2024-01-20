@@ -119,7 +119,7 @@ export default function Sidebar() {
                 <div className="w-full px-3">
                     <div className="flex justify-between px-[2%] py-3 items-start space-x-3 text-gray-300 border-b border-gray-400">
                         <UserCircleIcon className="h-8 w-7"/>
-                        <div className="flex flex-col items-start">
+                        <div className="flex flex-col w-[60%] items-start">
                             <div className="text-sm font-semibold">{userName}</div>
                             <div className="text-xs font-thin leading-tight tracking-tight text-gray-400">{email}</div>
                         </div>

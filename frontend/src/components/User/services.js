@@ -29,7 +29,7 @@ export default function Services() {
             <div className="w-full flex flex-row flex-wrap px-[1%] py-[1%] justify-start items-start transform duration-500">
                 {services.length > 0 ? (
                     services.map((service) => (
-                        <Link key={service._id} to="/business/myservices" className="basis-1/4 cursor-pointer">
+                        <Link key={service._id} to={`/user/services/${service._id}`} className="basis-1/4 cursor-pointer">
                             <Card service={service} />
                         </Link>
                     ))
