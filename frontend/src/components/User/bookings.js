@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
-import { ClockIcon, MapPinIcon } from '@heroicons/react/24/solid';
 import { useUserStore } from '../../store';
+import { ClockIcon, MapPinIcon, TrashIcon } from '@heroicons/react/24/solid';
 
 export default function Bookings() {
     const [appointments, setAppointments] = useState([]);
@@ -20,6 +20,7 @@ export default function Bookings() {
             });
 
             const j = await response.json();
+            console.log(j)
             if (j.success) {
                 setAppointments(j.data);
             }
@@ -27,47 +28,74 @@ export default function Bookings() {
         loadAppointments();
     }, [appointments.length]);
 
+    const handleDelete = async (appointmentId, serviceId, date, timeslot, e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:4000/user/cancelappointment", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                appointmentId: appointmentId,
+                serviceId: serviceId,
+                date: date,
+                timeslot: timeslot
+            })
+        });
+        // const j = await response.json();
+        // if (j.success) {
+        //     window.location.reload();
+        // }
+    };
+
     return (
-        <div className="px-20 flex flex-col justify-start items-center">
+        <div className="px-[2%] flex flex-col justify-start items-center">
             <div className="text-lg font-semibold pt-10 pb-6">
                 Pending Appointments
             </div>
 
-            {appointments.length > 0 ? (
-                appointments.map((appointment) => (
-                    <Link to={`/user/myapppointments/${appointment.id}`} className="flex flex-row h-full w-full bg-red-50/20 bg-opacity-60 border rounded-sm shadow-md transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
-                        <div>
-                            <img className="h-full w-full object-cover rounded-sm" src="https://www.instyle.com/thmb/okuYAdKVwA8NVR2qU1EvynFDIhs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/358032313_672917074874413_1182875844247783602_n-b92f5d3e0fd74464abc182925b423811.jpg" alt="" />
-                        </div>
-                        <div>
-                            <div className="flex flex-col shadow-md px-2 py-3">
-                                <div className="text-gray-700 font-medium">{appointment.name}</div>
-                                <div className="flex flex-row w-48 justify-between">
-                                    <div>{appointment.business}</div>
-                                    <div>{appointment.price}</div>
+            <div className="w-full grid grid-cols-3 gap-6 justify-between items-start transform duration-500">
+                {appointments.length > 0 ? (
+                    appointments.map((appointment) => (
+                        <div key={appointment._id} className="flex flex-row h-full bg-red-50/20 bg-opacity-60 border rounded-sm shadow-md transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
+                            <div className="h-full w-[75%] relative">
+                                <img className="h-full w-full object-cover" src={appointment.image} alt="" />
+                                <form action="post" className="absolute top-0 right-0 p-3">
+                                    <button type="submit" className="flex flex-row justify-around" onClick={(e) => handleDelete(appointment.appointmentId, appointment.serviceId, appointment.date, appointment.timeslot, e)}>
+                                        <TrashIcon className="h-5 w-6 hover:h-6 text-gray-800" />
+                                    </button>
+                                </form>
+                            </div>
+                            <div className="w-full flex flex-col justify-between">
+                                <div className="flex flex-col gap-y-4">
+                                    <div className="px-3 py-3 shadow-md">
+                                        <div className="text-gray-700 text-base font-semibold">{appointment.businessname}</div>
+                                        <div className="flex flex-row w-full justify-between pt-1">
+                                            <div>{appointment.name}</div>
+                                            <div>Rs.{appointment.price}</div>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-row mx-8 py-0.5 justify-around items-center border border-gray-200 rounded-lg">
+                                        <ClockIcon className="h-5 w-5" />
+                                        <div>{appointment.timeslot.startTime} to {appointment.timeslot.endTime}</div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-row items-start px-2 py-2 border-t border-gray-200">
+                                    <MapPinIcon className="h-5 w-6" />
+                                    <div className="text-sm tracking-tight">{appointment.location}</div>
                                 </div>
                             </div>
-                            <div className="flex flex-row mx-6 my-3 justify-center items-center border rounded-lg bg-white">
-                                <ClockIcon className="h-5 w-5" />
-                                <div>{appointment.starttime} to {appointment.endtime}</div>
-                            </div>
-                            <div className="flex flex-row px-2 items-start">
-                                <MapPinIcon className="h-6 w-6" />
-                                <div className="text-sm">{appointment.loaction}</div>
-                            </div>
                         </div>
-                    </Link>
-                ))
-            ) : (
-                <div className="flex flex-row text-gray-600">
-                    <div className="text-3xl pr-4">: )</div>
-                    <div className="py-2 text-lg">No appointmens found.</div>
-                </div>
-            )}
-
-            {/* <div className="grid grid-cols-3 grid-rows-1 gap-10 ">
-                
-            </div> */}
-        </div>
+                    ))
+                ) : (
+                    <div className="flex flex-row text-gray-600">
+                        <div className="text-3xl pr-4">: )</div>
+                        <div className="py-2 text-lg">No appointmens found.</div>
+                    </div>
+                )
+                }
+            </div>
+        </div >
     );
 };

@@ -5,9 +5,9 @@ import Bookings from "../../components/User/bookings";
 
 export default function Home() {
     return (
-        <div className="flex flex-row">
+        <div className="w-screen flex flex-row">
             <Sidebar />
-            <div className="h-screen w-full flex flex-col justify-start items-center">
+            <div className="w-full flex flex-col justify-start items-center ml-[16.6%]">
                 <Carousel/>
                 <Bookings/>
             </div>

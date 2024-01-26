@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Business = require("../models/business");
 const Service = require("../models/service");
 
 module.exports.signup = async (req, res) => {
@@ -62,8 +63,8 @@ module.exports.signout = (req, res) => {
 module.exports.updateInfo = async (req, res) => {
   const { id, username, email, contactno } = req.body;
   try {
-    await User.findOneAndUpdate({ _id: id }, { $set: { username: username, email: email, contactno: contactno} });
-    res.json({ success: true, username: username, email: email, contactno: contactno});
+    await User.findOneAndUpdate({ _id: id }, { $set: { username: username, email: email, contactno: contactno } });
+    res.json({ success: true, username: username, email: email, contactno: contactno });
   }
   catch (error) {
     console.log(error);
@@ -73,8 +74,54 @@ module.exports.updateInfo = async (req, res) => {
 
 module.exports.fetchServices = async (req, res) => {
   try {
-    const services = await Service.find({}, 'id name image price');
+    const services = await Service.find({}, 'id name image price businessId').populate('businessId', 'username location');
     res.json({ success: true, data: services });
+  }
+  catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+};
+
+module.exports.fetchServiceProfile = async (req, res) => {
+  const { serviceId } = req.body;
+  const service = await Service.findById(serviceId);
+  const id = service.businessId;
+  const business = await Business.findById(id).select('image username description contactno email location');
+  res.json({ success: true, servicedata: service, businessdata: business });
+};
+
+module.exports.booking = async (req, res) => {
+  try {
+    const { userId, serviceId, date, timeslot } = req.body;
+    const user = await User.findById(userId);
+    user.appointments.push({
+      serviceId: serviceId,
+      date: date,
+      timeslot: {
+        startTime: timeslot.startTime,
+        endTime: timeslot.endTime,
+      },
+    });
+    await user.save();
+
+    const service = await Service.findById(serviceId);
+    const timeslots = service.timeslots;
+
+    for (let i = 0; i < timeslots.length; i++) {
+      if (timeslots[i].date === date) {
+        const slot = timeslots[i].timeslot;
+
+        for (let i = 0; i < slot.length; i++) {
+          if (slot[i].startTime === timeslot.startTime && slot[i].endTime === timeslot.endTime) {
+            slot[i].bookedBy = userId;
+          }
+        }
+      }
+    }
+    await service.save();
+
+    res.json({ success: true });
   }
   catch (err) {
     console.log(err);
@@ -85,12 +132,42 @@ module.exports.fetchServices = async (req, res) => {
 module.exports.fetchAppointments = async (req, res) => {
   try {
     const { id } = req.body;
-    const user = await User.findById(id).populate('appointments');
-    console.log(user);
-    res.json({ success: true, data: user.appointments });
+    const user = await User.findById(id);
+    const ap = user.appointments;
+
+    const appointment = [];
+    for (let i = 0; i < ap.length; i++) {
+      const service = await Service.findById(ap[i].serviceId).select('_id name businessId image price');
+      const business = await Business.findById(service.businessId).select('username location');
+
+      const obj = {
+        serviceId: service._id,
+        image: service.image,
+        name: service.name,
+        businessname: business.username,
+        price: service.price,
+        appointmentId: ap[i]._id,
+        date: ap[i].date,
+        timeslot: ap[i].timeslot,
+        location: business.location
+      }
+      appointment.push(obj);
+    }
+    res.json({ success: true, data: appointment });
   }
   catch (err) {
     console.log(err);
+    res.json({ success: false });
+  }
+};
+
+module.exports.cancelAppointment = async (req, res) => {
+  console.log(req.body);
+  try {
+    res.json({ success: true });
+  }
+  catch (error) {
+    console.log(error);
     res.json({ success: false });
   }
 };

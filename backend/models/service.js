@@ -33,7 +33,22 @@ const TimeSlotSchema = new Schema({
             message: 'End time must be greater than or equal to start time',
         },
     },
+    bookedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        default: null,
+        required: false,
+    }
 });
+
+const Slots= new Schema({
+    date: {
+        type: String,
+        required: true,
+    },
+    timeslot: [TimeSlotSchema]
+});
+
 
 const ServiceSchema = new Schema({
     name: {
@@ -50,7 +65,12 @@ const ServiceSchema = new Schema({
     },
     description: String,
     date: DateSlotSchema,
-    timeslots: [TimeSlotSchema]
+    timeslots: [Slots],
+    businessId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business',
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('Service', ServiceSchema);

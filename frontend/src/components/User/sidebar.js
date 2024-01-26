@@ -10,7 +10,6 @@ export default function Sidebar() {
     const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false);
     const [infoUpdatedrawer, setinfoUpdateDrawer] = useState(false);
     const { userId, userName, email, contactNo, setUser, clearUser } = useUserStore();
-
     const toggleSortDropdown = () => {
         setSortDropdownOpen(!isSortDropdownOpen);
     };
@@ -59,14 +58,17 @@ export default function Sidebar() {
         });
         const j = await response.json();
         if (j.success) {
+            console.log("B", {userId, userName, email, contactNo} );
             setUser(userId, j.username, j.email, j.contactno);
+            console.log("A", {userId, userName, email, contactNo} )
+            console.log({userId, userName, email, contactNo});
             handleinfoUpdateDrawer();
             window.location.reload();
         }
     };
 
     return (
-        <div className="h-screen w-[18%]">
+        <div className="fixed h-screen">
             <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-slate-800">
                 <div>
                     <div className="xl:flex justify-start p-6 items-center space-x-3">
@@ -77,7 +79,7 @@ export default function Sidebar() {
                         <div className="pl-[7%] flex flex-col justify-start items-center w-full border-gray-500 border-b space-y-2.5 pb-3">
                             <button className="flex jusitfy-start items-center space-x-5 w-full text-gray-300 hover:text-white font-medium">
                                 <Squares2X2Icon className="h-6 w-6" />
-                                <Link to="/business/myservices" className="text-lg">Appointments</Link>
+                                <Link to="/user/myapppointments" className="text-lg">Appointments</Link>
                             </button>
                             <Link to="/user/services" className="flex jusitfy-start items-center w-full space-x-5 font-medium text-lg text-gray-300 hover:text-white" type="button">
                                 <SquaresPlusIcon className="h-6 w-6" />

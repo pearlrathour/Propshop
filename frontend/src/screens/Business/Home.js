@@ -4,9 +4,9 @@ import Services from "../../components/Business/services";
 
 export default function Home() {
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row w-screen">
             <Sidebar/>
-            <div className="h-screen w-full flex flex-col justify-start items-center">
+            <div className="w-full ml-[16.5%]" >
                 <Services />
             </div>
         </div>

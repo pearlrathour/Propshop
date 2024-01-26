@@ -2,6 +2,17 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const passportLocalMongoose = require('passport-local-mongoose');
 
+const timeslot = new Schema({
+    startTime: {
+        type: String,
+        required: true,
+    },
+    endTime: {
+        type: String,
+        required: true,
+    },
+});
+
 const UserSchema = new Schema({
     username: {
         type: String,
@@ -17,7 +28,17 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    appointments: []
+    appointments: [{
+        serviceId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Service'
+        },
+        date: {
+            type: String,
+            required: true
+        },
+        timeslot: timeslot
+    }]
 });
 
 UserSchema.plugin(passportLocalMongoose);

@@ -26,7 +26,7 @@ export default function Services() {
     return (
         <div className="flex flex-row">
             <Sidebar />
-            <div className="w-full flex flex-row flex-wrap px-[1%] py-[1%] justify-start items-start transform duration-500">
+            <div className="w-full flex flex-row flex-wrap ml-[16%] px-[1%] py-[1%] justify-start items-start transform duration-500">
                 {services.length > 0 ? (
                     services.map((service) => (
                         <Link key={service._id} to={`/user/services/${service._id}`} className="basis-1/4 cursor-pointer">

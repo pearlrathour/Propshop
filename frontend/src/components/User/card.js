@@ -2,7 +2,8 @@ import React from "react";
 import { MapPinIcon } from '@heroicons/react/24/solid';
 
 export default function Card(props) {
-    const { name = "Service Name", businessname = "Business Name", image= "https://www.artisticmoods.com/wp-content/uploads/tropicalia_by_mathiole-d31lvne.jpg", price = "", description="", location = "" } = props.service;
+    const { name = "Service Name", businessId = {}, image= "https://www.artisticmoods.com/wp-content/uploads/tropicalia_by_mathiole-d31lvne.jpg", price = "", description=""} = props.service;
+    const { username = "Businessname", location="Loc"} = businessId;
 
     return (
         <div className="p-4 transform duration-500">
@@ -12,12 +13,12 @@ export default function Card(props) {
                 </div>
                 <div className="text-xl font-semibold text-gray-700 px-3 pt-3">{name}</div>
                 <div className="flex flex-row justify-between px-3 py-2">
-                    <div>{businessname}</div>
+                    <div>{businessId.username}</div>
                     <div className="flex flex-col text-base font-semibold text-gray-500 px-3">Rs.{price}</div>
                 </div>
                 <div className="flex flex-row justify-start items-center mt-auto border border-gray-200 px-3 py-2 text-base font-normal text-gray-700">
                     <MapPinIcon className="h-6 w-6" />
-                    <div>location</div>
+                    <div>{businessId.location}</div>
                 </div>
             </div>
         </div >

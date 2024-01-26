@@ -19,7 +19,16 @@ router.route('/user/updateinfo')
 router.route('/user/services')
     .post(users.fetchServices);
 
+router.route('/user/services/:id')
+    .post(users.fetchServiceProfile);
+
+router.route('/user/bookappointment')
+    .post(users.booking);
+
 router.route('/user/appointments')
     .post(users.fetchAppointments);
+
+router.route('/user/cancelappointment')
+    .post(users.cancelAppointment);
 
 module.exports = router;

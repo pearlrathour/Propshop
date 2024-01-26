@@ -11,7 +11,7 @@ const {PORT, DB_URL} = require('./config');
 const User = require("./models/user");
 const Business = require("./models/business");
 const userRoutes = require("./routes/users");
-const businessRoutes = require("./routes/business");
+// const businessRoutes = require("./routes/business");
 
 const app = express();
 const corsOpts = {
@@ -61,7 +61,7 @@ mongoose.connect(process.env.DB_URL)
   .catch((err) => console.log("No conn", err));
 
 app.use("/", userRoutes);
-app.use("/", businessRoutes);
+// app.use("/", businessRoutes);
 
 // app.get("/", (req, res) => {
 //   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));

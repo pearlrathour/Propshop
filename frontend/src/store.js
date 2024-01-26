@@ -2,13 +2,43 @@ import { create } from 'zustand';
 
 export const useBusinessStore = create((set) => ({
     businessId: localStorage.getItem('businessId') || null,
-    setBusiness: (id) => {
+    businessName: localStorage.getItem('businessName') || null,
+    email: localStorage.getItem('email') || null,
+    contactNo: localStorage.getItem('contactNo') || null,
+    Location: localStorage.getItem('Location') || null,
+    Description: localStorage.getItem('Description') || null,
+    Image: localStorage.getItem('Image') || null,
+    setBusiness: (id, businessname, email, contactno, location, description, image) => {
         set({ businessId: id });
+        set({ businessName: businessname });
+        set({ email: email });
+        set({ contactNo: contactno });
+        set({ Location: location });
+        set({ Description: description });
+        set({ Image: image });
         localStorage.setItem('businessId', id);
+        localStorage.setItem('businessName', businessname);
+        localStorage.setItem('email', email);
+        localStorage.setItem('contactNo', contactno);
+        localStorage.setItem('Location', location);
+        localStorage.setItem('Description', description);
+        localStorage.setItem('Image', image);
     },
     clearBusiness: () => {
         set({ businessId: null });
+        set({ businessName: null });
+        set({ email: null });
+        set({ contactNo: null });
+        set({ Location: null });
+        set({ Description: null });
+        set({ Image: null });
         localStorage.removeItem('businessId');
+        localStorage.removeItem('businessName');
+        localStorage.removeItem('email');
+        localStorage.removeItem('contactNo');
+        localStorage.removeItem('Location');
+        localStorage.removeItem('Description');
+        localStorage.removeItem('Image');
     },
 }))
 

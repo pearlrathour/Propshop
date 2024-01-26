@@ -8,12 +8,11 @@ export default function Sidebar() {
     let navigate = useNavigate();
     const [isSortDropdownOpen, setSortDropdownOpen] = useState(false);
     const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false);
-    const { businessId, clearBusiness } = useBusinessStore();
+    const { businessId, businessName, email, contactNo, Location, Description, Image, setBusiness, clearBusiness } = useBusinessStore();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [infoUpdatedrawer, setinfoUpdateDrawer] = useState(false);
-    const [profile, setProfile] = useState([]);
     const [dateSlot, setDateSlot] = useState({ startDate: '', endDate: '' });
-    const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '' }]);
+    const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '', bookedBy: null}]);
 
     const toggleSortDropdown = () => {
         setSortDropdownOpen(!isSortDropdownOpen);
@@ -31,23 +30,6 @@ export default function Sidebar() {
         setinfoUpdateDrawer(!infoUpdatedrawer);
     };
 
-    useEffect(() => {
-        async function loadInfo() {
-            const res = await fetch("http://localhost:4000/business/info", {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    businessId: businessId
-                })
-            });
-            const data = await res.json();
-            setProfile(data);
-        }
-        loadInfo();
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -61,10 +43,16 @@ export default function Sidebar() {
                 name: e.target.elements.name.value,
                 image: e.target.elements.image.value,
                 price: e.target.elements.price.value,
-                description: e.target.elements.description.value
+                description: e.target.elements.description.value,
+                date: dateSlot,
+                timeslots: timeSlots
             })
         });
-        setDrawerOpen(!drawerOpen);
+        const j= await response.json();
+        if (j.success) {
+            handleDrawerToggle();
+            window.location.reload();
+        }
     };
 
     const handleDateChange = (field, value) => {
@@ -112,7 +100,7 @@ export default function Sidebar() {
         }
     };
 
-    const handleSetting = async (e) => {
+    const handleUpdate = async (e) => {
         e.preventDefault();
 
         const response = await fetch("http://localhost:4000/business/updateinfo", {
@@ -123,7 +111,7 @@ export default function Sidebar() {
             body: JSON.stringify({
                 id: businessId,
                 username: e.target.elements.username.value,
-                email: e.target.elements.email.value,
+                email: email,
                 contactno: e.target.elements.contactno.value,
                 location: e.target.elements.location.value,
                 image: e.target.elements.image.value,
@@ -132,35 +120,14 @@ export default function Sidebar() {
         });
         const j = await response.json();
         if (j.success) {
+            setBusiness(businessId, j.username, j.email, j.contactno, j.location, j.description, j.image);
             handleinfoUpdateDrawer();
             window.location.reload();
         }
     };
 
     return (
-        <div className="h-screen w-[18%]">
-            {/* <div className="xl:hidden flex justify-between h-screen w-full p-6 items-center ">
-                <div className="flex justify-between  items-center space-x-3">
-                    <img className="w-11 h-11 mr-2" src={"https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"} alt="" />
-                    <p className="text-2xl leading-6 text-white">Propshop</p>
-                </div>
-                <div aria-label="toggler" className="flex justify-center items-center">
-                    <button aria-label="open" id="open" onclick="showNav(true)" className="hidden focus:outline-none focus:ring-2">
-                        <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 6H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M4 12H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M4 18H20" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                    <button aria-label="close" id="close" onclick="showNav(true)" className=" focus:outline-none focus:ring-2">
-                        <svg className="" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M18 6L6 18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M6 6L18 18" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </button>
-                </div>
-            </div> */}
-
+        <div className="fixed h-screen">
             <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-slate-800">
                 <div>
                     <div className="xl:flex justify-start p-6 items-center space-x-3">
@@ -265,9 +232,9 @@ export default function Sidebar() {
                 <div className="w-full px-3">
                     <div className="flex justify-between px-[2%] py-3 items-center space-x-3  text-gray-300 border-b border-gray-400">
                         <div className="h-8 w-8 rounded-md shadow-gray-700 overflow-hidden">
-                            <img className="w-full h-full object-cover" src={profile.image} alt="" />
+                            <img className="w-full h-full object-cover" src={Image} alt="" />
                         </div>
-                        <div className="text-base font-semibold">Business Name</div>
+                        <div className="text-base font-semibold">{businessName}</div>
                         <button className="cursor-pointer" type="button" onClick={handleinfoUpdateDrawer} data-drawer-target="drawer-info-update" data-drawer-show="drawer-info-update" aria-controls="drawer-info-update">
                             <Cog6ToothIcon className="h-7 w-7 gear-rotate" />
                         </button>
@@ -281,30 +248,30 @@ export default function Sidebar() {
                                 <XMarkIcon />
                             </button>
 
-                            <form className="space-y-3" method="post" onSubmit={handleSetting}>
+                            <form className="space-y-3" method="post" onSubmit={handleUpdate}>
                                 <div>
                                     <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-700">Name</label>
-                                    <input type="text" id="username" defaultValue={profile.username} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Name" required />
+                                    <input type="text" id="username" defaultValue={businessName} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Name" required />
                                 </div>
                                 <div>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email Address</label>
-                                    <input type="email" id="email" defaultValue={profile.email} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Email Address" required />
+                                    <input type="email" id="email" defaultValue={email} className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" placeholder="Email Address" disabled />
                                 </div>
                                 <div>
                                     <label htmlFor="contactno" className="block mb-2 text-sm font-medium text-gray-700">Contact Number</label>
-                                    <input type="text" id="contactno" defaultValue={profile.contactno} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Contact Number" required />
+                                    <input type="text" id="contactno" defaultValue={contactNo} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Contact Number" required />
                                 </div>
                                 <div>
                                     <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-700">Location</label>
-                                    <input type="text" id="location" defaultValue={profile.location} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Location" required />
+                                    <input type="text" id="location" defaultValue={Location} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Location" required />
                                 </div>
                                 <div>
                                     <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-700">Image URL</label>
-                                    <input type="text" name="image" id="image" defaultValue={profile.image} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 " placeholder="Image URL" required />
+                                    <input type="text" name="image" id="image" defaultValue={Image} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 " placeholder="Image URL" required />
                                 </div>
                                 <div>
                                     <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">Description</label>
-                                    <textarea id="description" defaultValue={profile.description} rows="5" className="block p-3 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  " placeholder="Description"></textarea>
+                                    <textarea id="description" defaultValue={Description} rows="5" className="block p-3 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  " placeholder="Description"></textarea>
                                 </div>
                                 <button type="submit" className="text-white justify-center flex items-center bg-blue-600 hover:bg-blue-700 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
                                     Update Details
