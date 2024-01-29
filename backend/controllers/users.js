@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const Business = require("../models/business");
-const Service = require("../models/service");
+const {Service} = require("../models/service");
 
 module.exports.signup = async (req, res) => {
   try {
@@ -162,8 +162,25 @@ module.exports.fetchAppointments = async (req, res) => {
 };
 
 module.exports.cancelAppointment = async (req, res) => {
-  console.log(req.body);
+  const {userId, appointmentId, serviceId, date, timeslot}=req.body;
+
   try {
+    const ap = await User.findByIdAndUpdate(userId,{ $pull: {appointments: {_id: appointmentId}}}, {new: true});
+    const service = await Service.findByIdAndUpdate(serviceId);
+    const timeslots=service.timeslots;
+    
+    for(let i=0; i<timeslots.length; i++){
+      if(timeslots[i].date===date){
+        const slots= timeslots[i].timeslot;
+        for(let j=0; j<slots.length; j++){
+          if(slots[j].startTime===timeslot.startTime && slots[j].endTime===timeslot.endTime){
+            slots[j].bookedBy=null;
+            break;
+          }
+        }
+      }
+    }
+    await service.save();
     res.json({ success: true });
   }
   catch (error) {

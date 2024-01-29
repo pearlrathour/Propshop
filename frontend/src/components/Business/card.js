@@ -9,15 +9,7 @@ export default function Card(props) {
                     <img className="w-full object-fill transform hover:scale-110 duration-200" style={{ height: "20pc" }} src={image} alt="" />
                 </div>
                 <div className="flex flex-col text-xl font-semibold text-gray-700 px-3 pt-3">{name}</div>
-                <div className="flex flex-col text-base font-semibold text-gray-500 px-3">{`Rs ${price}`}</div>
-                {/* <div className="flex flex-row justify-between items-center px-3 pb-4 text-base font-normal text-gray-700">
-                    <div className="text-green-500">
-                        6 Booked slots
-                    </div>
-                    <div className="text-red-500">
-                        5 Empty slots
-                    </div>
-                </div> */}
+                <div className="flex flex-col text-base font-semibold text-gray-500 px-3 pb-3">{`Rs ${price}`}</div>
             </div>
         </div >
     );

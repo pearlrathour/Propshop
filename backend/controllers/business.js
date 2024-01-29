@@ -1,5 +1,5 @@
 const Business = require("../models/business");
-const Service = require("../models/service");
+const { Service, TimeSlot, Slot } = require("../models/service");
 
 module.exports.signup = async (req, res) => {
   try {
@@ -93,7 +93,7 @@ module.exports.createService = async (req, res) => {
   const startDate = new Date(date.startDate);
   const endDate = new Date(date.endDate);
 
-  for (let currentDate= startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+  for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
     const formattedDate = currentDate.toISOString().split('T')[0];
 
     const obj = {
@@ -111,14 +111,44 @@ module.exports.createService = async (req, res) => {
 
 module.exports.fetchService = async (req, res) => {
   const { id } = req.body;
-  const business = await Business.findById(id).populate('services');
-  res.json(business.services);
+  const { searchBy, sortBy } = req.query;
+  let business;
+  if (sortBy) {
+    if (sortBy === 'priceASC') {
+      business = await Business.findById(id).populate({
+        path: 'services',
+        options: { sort: { price: 1 } }
+      });
+    }
+    else if (sortBy === 'priceDSC') {
+      business = await Business.findById(id).populate({
+        path: 'services',
+        options: { sort: { price: -1 } }
+      });
+    }
+    else {
+      business = await Business.findById(id).populate({
+        path: 'services',
+        options: { sort: { date: 1 } }
+      });
+    }
+  }
+  if (searchBy) {
+    business = await Business.findById(id).populate({
+      path: 'services',
+      match: { name: { $regex: new RegExp(searchBy, 'i') } }, //case sen
+    });
+  }
+  else {
+  business = await Business.findById(id).populate('services');
+}
+res.json(business.services);
 };
 
 module.exports.fetchServiceProfile = async (req, res) => {
   const { businessId, serviceId } = req.body;
   const service = await Service.findById(serviceId);
-  console.log(service)
+  // console.log(service);
   res.json({ success: true, data: service });
 };
 
@@ -128,6 +158,39 @@ module.exports.removeService = async (req, res) => {
   try {
     await Service.findOneAndDelete({ _id: serviceId });
     await Business.findByIdAndUpdate(businessId, { $pull: { services: serviceId } });
+
+    res.json({ success: true });
+  }
+  catch (error) {
+    res.json({ success: false });
+  }
+};
+
+module.exports.updateService = async (req, res) => {
+  const { name, image, price, description, date, timeslots, serviceId } = req.body;
+
+  try {
+    const startDate = new Date(date.startDate);
+    const endDate = new Date(date.endDate);
+    const service = await Service.findById(serviceId);
+    const slots = service.timeslots;
+    let dbtimeslot;
+
+    for (let slot of slots) {
+      dbtimeslot = slot.timeslot;
+      for (let timeslot of timeslots) {
+        if (timeslot._id === undefined) {
+          const obj = {
+            startTime: timeslot.startTime,
+            endTime: timeslot.endTime,
+            bookedBy: timeslot.bookedBy
+          }
+          dbtimeslot.push(obj);
+        }
+      }
+    }
+
+    await Service.findByIdAndUpdate({ _id: serviceId }, { $set: { name: name, image: image, price: price, description: description, timeslots: slots } });
 
     res.json({ success: true });
   }

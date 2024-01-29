@@ -8,7 +8,7 @@ export default function Home() {
         <div className="w-screen flex flex-row">
             <Sidebar />
             <div className="w-full flex flex-col justify-start items-center ml-[16.6%]">
-                <Carousel/>
+                {/* <Carousel/> */}
                 <Bookings/>
             </div>
         </div>

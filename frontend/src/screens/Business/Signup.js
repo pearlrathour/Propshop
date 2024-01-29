@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import logo from '../../assets/images/logo1.png';
 import {useBusinessStore} from '../../store';
 
 export default function BusinessSignup() {
@@ -37,17 +38,17 @@ export default function BusinessSignup() {
     }
   
     return (
-        <div className="bg-gray-400 dark:bg-slate-100 py-10">
+        <div className="bg-slate-100 py-10">
             <div className="flex flex-col items-center justify-center px-8 py-8 mx-auto md:h-full lg:py-0">
-                <Link to="/" className="flex items-center mb-6 text-4xl font-bold text-gray-200 dark:text-blue-700">
-                    <img className="w-10 h-10 mr-2" src={"https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"} alt="" />
-                    Propshop
+                <Link to="/" className="flex items-center mb-6 text-4xl font-bold text-teal-700 tracking-tight">
+                    <img className="w-10 h-10 mr-2" src={logo} alt="" />
+                    PROPSHOP
                 </Link>
-                <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-xl xl:p-0 dark:bg-white">
+                <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-xl xl:p-0">
                     <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 className="text-center text-xl font-semibold text-gray-900 md:text-2xl dark:text-gray-900">
-                            Register you Salon
-                        </h1>
+                        <div className="text-center text-xl font-semibold text-gray-900 md:text-2xl dark:text-gray-900">
+                            Register you Business
+                        </div>
                         <form className="space-y-4 md:space-y-6" action="/business/signup" method="post" onSubmit={handleSubmit}>
                             <div>
                                 <input type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-base rounded-md block w-full p-2.5 dark:bg-transparent dark:border-gray-300 dark:placeholder-gray-500 focus:placeholder-gray-400 focus:border-none" placeholder="Name" required />
@@ -70,12 +71,12 @@ export default function BusinessSignup() {
                             <div>
                                 <input type="password" name="password" id="password" placeholder="Password" className="bg-gray-50 border border-zinc-100 text-gray-900 sm:text-base rounded-md block w-full p-2.5 dark:bg-transparent dark:border-gray-300 dark:placeholder-gray-500 focus:placeholder-gray-400" required />
                             </div>
-                            <button type="submit" className="w-full text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md text-sm px-5 py-2.5 text-center">
+                            <button type="submit" className="w-full text-white bg-teal-600 hover:bg-teal-700/90 font-medium rounded-md text-sm px-5 py-2.5 text-center">
                                 Create an account
                             </button>
                             <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                                 Already have an account?
-                                <Link to="/business/signin" className="font-medium text-blue-600 hover:underline cursor-pointer ml-2">
+                                <Link to="/business/signin" className="font-medium text-teal-600 hover:underline cursor-pointer ml-2">
                                     Sign In
                                 </Link>
                             </p>

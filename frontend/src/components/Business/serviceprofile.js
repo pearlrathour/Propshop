@@ -19,7 +19,7 @@ export default function ServiceProfile() {
     };
 
     async function loadData() {
-        const response = await fetch(`http://localhost:4000/business/myservices/${id}`, {
+        const response = await fetch(`http://localhost:4000/business/myservices/${id}?sortBy=`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -39,6 +39,7 @@ export default function ServiceProfile() {
             setService(data);
         }
     }
+    console.log(service);
 
     useEffect(() => {
         loadData();
@@ -78,7 +79,6 @@ export default function ServiceProfile() {
                 description: e.target.elements.description.value,
                 date: dateSlot,
                 timeslots: timeSlots,
-                businessId: businessId,
                 serviceId: id
             })
         });
@@ -97,12 +97,12 @@ export default function ServiceProfile() {
 
     const addTimeSlot = () => {
         if (timeSlots.length === 0)
-            setTimeSlots([...timeSlots, { startTime: '', endTime: '' }])
+            setTimeSlots([...timeSlots, { startTime: '', endTime: '', bookedBy: null}])
         else {
             const s = timeSlots[timeSlots.length - 1].startTime;
             const e = timeSlots[timeSlots.length - 1].endTime;
             if (s !== "" && e != "")
-                setTimeSlots([...timeSlots, { startTime: '', endTime: '' }])
+                setTimeSlots([...timeSlots, { startTime: '', endTime: '', bookedBy: null}])
             else
                 alert("Please select start and end time of slot")
         }
@@ -165,9 +165,9 @@ export default function ServiceProfile() {
                                     <div className="text-sm font-medium text-white mb-2">
                                         <div className="text-sm font-medium text-gray-700 mb-2">Date</div>
                                         <div className="flex flex-row items-center justify-between py-1">
-                                            <input type="date" id="startdate" defaultValue={dateSlot.startDate} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleDateChange('startDate', e.target.value)} required />
+                                            <input type="date" id="startdate" defaultValue={dateSlot.startDate} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleDateChange('startDate', e.target.value)} disabled />
                                             <div className="px-4 text-sm font-medium text-gray-700">to</div>
-                                            <input type="date" id="enddate" defaultValue={dateSlot.endDate} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleDateChange('endDate', e.target.value)} required />
+                                            <input type="date" id="enddate" defaultValue={dateSlot.endDate} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleDateChange('endDate', e.target.value)} disabled />
                                         </div>
                                     </div>
                                     <div>

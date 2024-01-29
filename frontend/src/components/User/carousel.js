@@ -25,6 +25,8 @@ export default function Carousel() {
         loadServices();
     }, []);
 
+    console.log("C",services);
+
     const itemsPerPage = 4;
     const totalPages = Math.ceil(services.length / itemsPerPage);
 
@@ -56,7 +58,7 @@ export default function Carousel() {
     // console.log(slides);
 
     return (
-        <div className="overflow-hidden relative h-[50%] w-[80pc]">
+        <div className="overflow-hidden relative h-[100%] w-[80pc]">
             <div className="flex flex-row h-full w-[320pc] bg-red-300 transition ease-out duration-500" style={{ transform: `translateX(-${current * 100}%)` }}>
                 {slides.map((slide, index) => (
                     <div key={index} className="flex flex-row h-full w-full space-x-6 bg-green-800 mx-4">

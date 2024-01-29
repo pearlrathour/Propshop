@@ -27,6 +27,7 @@ export default function Bookings() {
         }
         loadAppointments();
     }, [appointments.length]);
+    console.log(appointments);
 
     const handleDelete = async (appointmentId, serviceId, date, timeslot, e) => {
         e.preventDefault();
@@ -37,16 +38,17 @@ export default function Bookings() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                userId: userId,
                 appointmentId: appointmentId,
                 serviceId: serviceId,
                 date: date,
                 timeslot: timeslot
             })
         });
-        // const j = await response.json();
-        // if (j.success) {
-        //     window.location.reload();
-        // }
+        const j = await response.json();
+        if (j.success) {
+            window.location.reload();
+        }
     };
 
     return (
@@ -58,7 +60,7 @@ export default function Bookings() {
             <div className="w-full grid grid-cols-3 gap-6 justify-between items-start transform duration-500">
                 {appointments.length > 0 ? (
                     appointments.map((appointment) => (
-                        <div key={appointment._id} className="flex flex-row h-full bg-red-50/20 bg-opacity-60 border rounded-sm shadow-md transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
+                        <Link to={`/user/services/${appointment.serviceId}`} key={appointment._id} className="flex flex-row h-full bg-red-50/20 bg-opacity-60 border rounded-sm shadow-md transform hover:-translate-y-1 duration-300 hover:shadow-xl cursor-pointer">
                             <div className="h-full w-[75%] relative">
                                 <img className="h-full w-full object-cover" src={appointment.image} alt="" />
                                 <form action="post" className="absolute top-0 right-0 p-3">
@@ -86,16 +88,15 @@ export default function Bookings() {
                                     <div className="text-sm tracking-tight">{appointment.location}</div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))
                 ) : (
-                    <div className="flex flex-row text-gray-600">
+                    <div className="flex flex-row w-full justify-center text-gray-600">
                         <div className="text-3xl pr-4">: )</div>
-                        <div className="py-2 text-lg">No appointmens found.</div>
+                        <div className="py-2 text-lg">No appointments found.</div>
                     </div>
-                )
-                }
+                )}
             </div>
-        </div >
+        </div>
     );
 };

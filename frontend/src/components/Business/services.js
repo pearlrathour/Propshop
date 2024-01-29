@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "./card";
-import { useBusinessStore } from '../../store';
+import { useBusinessStore, useFilterStore } from '../../store';
 
 export default function Services() {
     const [services, setServices] = useState([]);
+    const { sortBy, searchBy }= useFilterStore();
     const { businessId } = useBusinessStore();
 
     useEffect(() => {
         async function loadData() {
-            const response = await fetch('http://localhost:4000/business/myservices', {
+            const sortByFilter= sortBy? `${searchBy?'&':'?'}sortBy=${sortBy}` : '';
+            const searchByFilter= searchBy? `${sortBy?'&':'?'}searchBy=${searchBy}` : '';
+            const response = await fetch(`http://localhost:4000/business/myservices${sortByFilter}${searchByFilter}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -25,7 +28,7 @@ export default function Services() {
             }
         }
         loadData();
-    }, [services.length]);
+    }, [sortBy,searchBy]);
 
     return (
         <div className={`flex flex-row flex-wrap py-6 justify-start items-start text-3xl text-gray-400 ${services.length ? "" : "bg-slate-200"}`}>

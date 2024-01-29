@@ -69,4 +69,15 @@ export const useUserStore = create((set) => ({
     },
 }));
 
+export const useFilterStore = create((set) => ({
+    sortBy: null,
+    searchBy: null,
+    setsortBy: (sortByFilter) => {
+        set({ sortBy: sortByFilter });
+    },
+    setsearchBy: (searchByFilter) => {
+        set({ searchBy: searchByFilter });
+    },
+}));
+
 export default useBusinessStore;

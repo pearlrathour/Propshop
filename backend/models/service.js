@@ -73,4 +73,8 @@ const ServiceSchema = new Schema({
     },
 });
 
-module.exports = mongoose.model('Service', ServiceSchema);
+const Service = mongoose.model('Service', ServiceSchema);
+const TimeSlot = mongoose.model('TimeSlot', TimeSlotSchema);
+const Slot = mongoose.model('Slot', Slots);
+
+module.exports = { Service, TimeSlot, Slot };
