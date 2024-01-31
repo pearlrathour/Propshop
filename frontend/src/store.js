@@ -3,39 +3,39 @@ import { create } from 'zustand';
 export const useBusinessStore = create((set) => ({
     businessId: localStorage.getItem('businessId') || null,
     businessName: localStorage.getItem('businessName') || null,
-    email: localStorage.getItem('email') || null,
-    contactNo: localStorage.getItem('contactNo') || null,
+    businessEmail: localStorage.getItem('businessEmail') || null,
+    businessContactNo: localStorage.getItem('businessContactNo') || null,
     Location: localStorage.getItem('Location') || null,
-    Description: localStorage.getItem('Description') || null,
     Image: localStorage.getItem('Image') || null,
-    setBusiness: (id, businessname, email, contactno, location, description, image) => {
+    Description: localStorage.getItem('Description') || null,
+    setBusiness: (id, businessname, businessEmail, businessContactNo, location, image, description) => {
         set({ businessId: id });
         set({ businessName: businessname });
-        set({ email: email });
-        set({ contactNo: contactno });
+        set({ businessEmail: businessEmail });
+        set({ businessContactNo: businessContactNo });
         set({ Location: location });
-        set({ Description: description });
         set({ Image: image });
+        set({ Description: description });
         localStorage.setItem('businessId', id);
         localStorage.setItem('businessName', businessname);
-        localStorage.setItem('email', email);
-        localStorage.setItem('contactNo', contactno);
+        localStorage.setItem('businessEmail', businessEmail);
+        localStorage.setItem('businessContactNo', businessContactNo);
         localStorage.setItem('Location', location);
-        localStorage.setItem('Description', description);
         localStorage.setItem('Image', image);
+        localStorage.setItem('Description', description);
     },
     clearBusiness: () => {
         set({ businessId: null });
         set({ businessName: null });
-        set({ email: null });
-        set({ contactNo: null });
+        set({ businessEmail: null });
+        set({ businessContactNo: null });
         set({ Location: null });
         set({ Description: null });
         set({ Image: null });
         localStorage.removeItem('businessId');
         localStorage.removeItem('businessName');
-        localStorage.removeItem('email');
-        localStorage.removeItem('contactNo');
+        localStorage.removeItem('businessEmail');
+        localStorage.removeItem('businessContactNo');
         localStorage.removeItem('Location');
         localStorage.removeItem('Description');
         localStorage.removeItem('Image');

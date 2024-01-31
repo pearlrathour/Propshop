@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const Business = require("../models/business");
-const {Service} = require("../models/service");
+const { Service } = require("../models/service");
 
 module.exports.signup = async (req, res) => {
   try {
@@ -12,7 +12,7 @@ module.exports.signup = async (req, res) => {
   }
   catch (e) {
     console.log(e);
-    res.json({ success: false });
+    res.json({ success: false, message: "User Signup Error" });
   }
 };
 
@@ -73,14 +73,39 @@ module.exports.updateInfo = async (req, res) => {
 };
 
 module.exports.fetchServices = async (req, res) => {
-  try {
-    const services = await Service.find({}, 'id name image price businessId').populate('businessId', 'username location');
-    res.json({ success: true, data: services });
+  const { id } = req.body;
+  const { searchBy, sortBy } = req.query;
+  let services;
+
+  if (sortBy || searchBy) {
+    if (sortBy) {
+      if (sortBy === 'priceASC') {
+        services = await Service.find({}, 'id name image price businessId')
+          .populate('businessId', ['username', 'location'])
+          .sort({ price: 1 });
+      }
+      else if (sortBy === 'priceDSC') {
+        services = await Service.find({}, 'id name image price businessId')
+          .populate('businessId', ['username', 'location'])
+          .sort({ price: -1 });
+      }
+      else {
+        services = await Service.find({}, 'id name image price businessId')
+          .populate('businessId', ['username', 'location'])
+          .sort({ date: 1 });
+      }
+    }
+    if (searchBy) {
+      services = await Service.find({ name: { $regex: new RegExp(searchBy, 'i') } }).populate(
+        'businessId',
+        ['username', 'location']
+      );
+    }
   }
-  catch (err) {
-    console.log(err);
-    res.json({ success: false });
+  else {
+    services = await Service.find({}, 'id name image price businessId').populate('businessId', 'username location');
   }
+  res.json({ success: true, data: services });
 };
 
 module.exports.fetchServiceProfile = async (req, res) => {
@@ -90,6 +115,7 @@ module.exports.fetchServiceProfile = async (req, res) => {
   const business = await Business.findById(id).select('image username description contactno email location');
   res.json({ success: true, servicedata: service, businessdata: business });
 };
+
 
 module.exports.booking = async (req, res) => {
   try {
@@ -162,19 +188,19 @@ module.exports.fetchAppointments = async (req, res) => {
 };
 
 module.exports.cancelAppointment = async (req, res) => {
-  const {userId, appointmentId, serviceId, date, timeslot}=req.body;
+  const { userId, appointmentId, serviceId, date, timeslot } = req.body;
 
   try {
-    const ap = await User.findByIdAndUpdate(userId,{ $pull: {appointments: {_id: appointmentId}}}, {new: true});
+    const ap = await User.findByIdAndUpdate(userId, { $pull: { appointments: { _id: appointmentId } } }, { new: true });
     const service = await Service.findByIdAndUpdate(serviceId);
-    const timeslots=service.timeslots;
-    
-    for(let i=0; i<timeslots.length; i++){
-      if(timeslots[i].date===date){
-        const slots= timeslots[i].timeslot;
-        for(let j=0; j<slots.length; j++){
-          if(slots[j].startTime===timeslot.startTime && slots[j].endTime===timeslot.endTime){
-            slots[j].bookedBy=null;
+    const timeslots = service.timeslots;
+
+    for (let i = 0; i < timeslots.length; i++) {
+      if (timeslots[i].date === date) {
+        const slots = timeslots[i].timeslot;
+        for (let j = 0; j < slots.length; j++) {
+          if (slots[j].startTime === timeslot.startTime && slots[j].endTime === timeslot.endTime) {
+            slots[j].bookedBy = null;
             break;
           }
         }

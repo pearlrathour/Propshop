@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useUserStore } from '../../store';
 import Sidebar from './sidebar';
+// import loader from '../../assets/loaders/loader1.gif';
 
 export default function ServiceProfile() {
     const { id } = useParams();
@@ -74,8 +75,8 @@ export default function ServiceProfile() {
 
     if (loading) {
         return (
-            <div>
-                Loading
+            <div className='w-full'>
+                Loading...
             </div>
         )
     }
@@ -88,7 +89,7 @@ export default function ServiceProfile() {
                     <div className="h-[65%] object-cover overflow-hidden">
                         <img className="h-full w-full" src={business.image} alt="" />
                     </div>
-                    <div className="flex flex-col h-[35%] justify-start bg-slate-200 space-y-2 p-6">
+                    <div className="flex flex-col h-[35%] justify-start bg-indigo-50 space-y-2 p-6">
                         <div className="flex flex-col items-center">
                             <div className="text-xl font-semibold">{business.username}</div>
                             <div className="">{business.description}</div>
@@ -107,12 +108,12 @@ export default function ServiceProfile() {
                         </div>
                     </div>
                 </div>
-                <div className="h-[70%] w-[50%] my-[3%] mx-[10%] flex flex-row overflow-hidden bg-slate-200 border border-gray-300 shadow-xl rounded-lg">
+                <div className="h-[70%] w-[50%] my-[3%] mx-[10%] flex flex-row overflow-hidden bg-indigo-50 border border-gray-300 shadow-xl rounded-lg">
                     <div className="w-full border-r border-gray-300">
                         <div className="h-[75%] object-cover overflow-hidden">
                             <img className="h-full w-full" src={service.image} alt="" />
                         </div>
-                        <div className="flex flex-col border justify-between text-xl font-light px-4 py-4">
+                        <div className="flex flex-col justify-between text-xl font-light px-4 py-4">
                             <div className="flex flex-row justify-between text-lg">
                                 <div>{service.name}</div>
                                 <div>Rs {service.price}</div>
@@ -137,7 +138,7 @@ export default function ServiceProfile() {
                                 </div>
                             )}
 
-                            <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm w-full px-3.5 py-1.5 my-4">
+                            <button type="submit" className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm w-full px-3.5 py-1.5 my-4">
                                 Book Slot
                             </button>
                         </form>

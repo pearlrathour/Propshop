@@ -29,6 +29,9 @@ router.route('/business/myservices')
 router.route('/business/myservices/:id')
     .post(business.fetchServiceProfile);
 
+router.route('/business/userinfo')
+    .post(business.fetchUserInfo);
+
 router.route('/business/deleteservice')
     .post(business.removeService);
 

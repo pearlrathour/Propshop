@@ -5,7 +5,7 @@ import {useBusinessStore} from '../../store';
 
 export default function BusinessSignin() {
     let navigate = useNavigate();
-    const {businessId, businessName, email, contactNo, Location, Description, Image, setBusiness}= useBusinessStore();
+    const { setBusiness}= useBusinessStore();
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -22,11 +22,10 @@ export default function BusinessSignin() {
       const j = await response.json();
       if (j.success) {
         setBusiness(j.id, j.username, j.email, j.contactno, j.location, j.image, j.description);
-        console.log({businessId, businessName, email, contactNo, Location, Description, Image, setBusiness});
         navigate("/business/myservices");
       }
       else {
-        console.log("Business Signin Error");
+          alert(j.message);
       }
     }
   return (

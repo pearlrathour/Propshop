@@ -65,11 +65,11 @@ export default function Bookings() {
                                 <img className="h-full w-full object-cover" src={appointment.image} alt="" />
                                 <form action="post" className="absolute top-0 right-0 p-3">
                                     <button type="submit" className="flex flex-row justify-around" onClick={(e) => handleDelete(appointment.appointmentId, appointment.serviceId, appointment.date, appointment.timeslot, e)}>
-                                        <TrashIcon className="h-5 w-6 hover:h-6 text-gray-800" />
+                                        <TrashIcon className="h-5 w-6 hover:h-6 text-gray-800 hover:text-red-700" />
                                     </button>
                                 </form>
                             </div>
-                            <div className="w-full flex flex-col justify-between">
+                            <div className="w-full flex flex-col justify-between bg-indigo-50">
                                 <div className="flex flex-col gap-y-4">
                                     <div className="px-3 py-3 shadow-md">
                                         <div className="text-gray-700 text-base font-semibold">{appointment.businessname}</div>
@@ -78,12 +78,12 @@ export default function Bookings() {
                                             <div>Rs.{appointment.price}</div>
                                         </div>
                                     </div>
-                                    <div className="flex flex-row mx-8 py-0.5 justify-around items-center border border-gray-200 rounded-lg">
+                                    <div className="flex flex-row mx-8 py-0.5 bg-white justify-around items-center border border-gray-200 rounded-lg">
                                         <ClockIcon className="h-5 w-5" />
                                         <div>{appointment.timeslot.startTime} to {appointment.timeslot.endTime}</div>
                                     </div>
                                 </div>
-                                <div className="flex flex-row items-start px-2 py-2 border-t border-gray-200">
+                                <div className="flex flex-row items-start px-2 py-2 border-t border-gray-20">
                                     <MapPinIcon className="h-5 w-6" />
                                     <div className="text-sm tracking-tight">{appointment.location}</div>
                                 </div>

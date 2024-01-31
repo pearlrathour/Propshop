@@ -9,6 +9,7 @@ export default function ServiceProfile() {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isProfileVisible, setIsProfileVisible] = useState(false);
     const [service, setService] = useState([]);
+    // const [userInfo, setUserInfo] = useState({});
     const [dateSlot, setDateSlot] = useState({ startDate: '', endDate: '' });
     const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '', bookedBy: null}]);
     const { businessId } = useBusinessStore();
@@ -33,13 +34,11 @@ export default function ServiceProfile() {
         if (j.success) {
             let data = await j.data;
             setDateSlot(data.date);
-            console.log("d",data);
             setTimeSlots(data.timeslots[0].timeslot);
-            console.log("T", timeSlots)
             setService(data);
         }
     }
-    console.log(service);
+    console.log("S",service);
 
     useEffect(() => {
         loadData();
@@ -101,7 +100,7 @@ export default function ServiceProfile() {
         else {
             const s = timeSlots[timeSlots.length - 1].startTime;
             const e = timeSlots[timeSlots.length - 1].endTime;
-            if (s !== "" && e != "")
+            if (s !== "" && e !== "")
                 setTimeSlots([...timeSlots, { startTime: '', endTime: '', bookedBy: null}])
             else
                 alert("Please select start and end time of slot")
@@ -114,10 +113,28 @@ export default function ServiceProfile() {
         setTimeSlots(updatedTimeSlots);
     };
 
+    // const handleUserInfo = async (userId, e) => {
+    //     e.preventDefault();
+
+    //     const response = await fetch("http://localhost:4000/business/userinfo", {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             id: userId
+    //         })
+    //     });
+    //     const j = await response.json();
+    //     if (j.success) {
+    //         setUserInfo(j.data);
+    //     }
+    // };
+
     return (
         <div className="flex flex-row">
             <Sidebar />
-            <div className="w-full flex flex-row ml-[16.8%]">
+            <div className="w-full flex flex-row ml-[16.6%]">
                 <div className="fixed h-screen w-[28%] bg-slate-200 flex flex-col">
                     <div className="h-[75%] object-cover overflow-hidden">
                         <img className="h-full w-full" src={service.image} alt="" />
@@ -131,7 +148,7 @@ export default function ServiceProfile() {
                         <div className="py-2 text-sm text-center font-medium bg-slate-200 text-gray-800">{`${service.date?.startDate ?? ''} to ${service.date?.endDate ?? ''}`}</div>
                     </div>
                     <div className="px-8 py-2 flex flex-row justify-between text-gray-900">
-                        <button className="px-5 py-1.5 rounded-md bg-emerald-400 hover:bg-emerald-500  hover:text-gray-100" type="button" onClick={handleDrawerToggle} data-drawer-target="drawer-form" data-drawer-show="drawer-form" aria-controls="drawer-form">
+                        <button className="px-5 py-1.5 rounded-md bg-green-400/90 hover:bg-green-500  hover:text-gray-100" type="button" onClick={handleDrawerToggle} data-drawer-target="drawer-form" data-drawer-show="drawer-form" aria-controls="drawer-form">
                             Edit
                         </button>
 
@@ -179,34 +196,34 @@ export default function ServiceProfile() {
                                                 <input type="time" id={`endtime-${index}`} defaultValue={slot.endTime} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleTimeChange(index, 'endTime', e.target.value)} required />
                                             </div>
                                         ))}
-                                        <button type="button" onClick={addTimeSlot} className="text-blue-500 text-base hover:underline cursor-pointer focus:outline-none">
+                                        <button type="button" onClick={addTimeSlot} className="text-teal-600 text-base hover:underline cursor-pointer focus:outline-none">
                                             Add Time Slot
                                         </button>
                                     </div>
-                                    <button type="submit" className="text-white justify-center flex items-center bg-blue-600 hover:bg-blue-700 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                    <button type="submit" className="text-white justify-center flex items-center bg-teal-600 hover:bg-teal-700 w-full focus:ring-4 focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
                                         Update Service</button>
                                 </form>
                             )}
                         </div>
                         <form onSubmit={handleDelete}>
-                            <button type="submit" className="px-5 py-1.5 rounded-md bg-red-300 hover:bg-red-500 hover:text-gray-100">
+                            <button type="submit" className="px-5 py-1.5 rounded-md bg-red-400 hover:bg-red-500 hover:text-gray-100">
                                 Delete
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="overflow-x-auto w-[35%] rounded-lg shadow-md ml-[50%] my-[3%]">
+                <div className="overflow-x-auto w-[40%] rounded-lg shadow-md ml-[45%] my-[3%]">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                         <thead className="text-xs text-gray-600 uppercase bg-green-100">
                             <tr>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="py-3 text-center">
                                     Date
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="py-3 text-center">
                                     Time slot
                                 </th>
-                                <th scope="col" className="px-6 py-3">
+                                <th scope="col" className="py-3 text-center">
                                     Booked By
                                 </th>
                             </tr>
@@ -216,42 +233,41 @@ export default function ServiceProfile() {
                                 slot.timeslot.map((time, timeIndex) => (
                                     <tr key={`${index}-${timeIndex}`} className="bg-transparent text-gray-600 hover:bg-green-50">
                                         {timeIndex === 0 ? (
-                                            <th scope="row" className="px-6 py-4 font-medium">
+                                            <th scope="row" className="px-6 py-4 text-center font-medium">
                                                 {slot.date}
                                             </th>
                                         ) : (
                                             <th scope="row" className="px-6 py-4"></th>
                                         )}
-                                        <th scope="row" className="px-6 py-4 font-light">
+                                        <th scope="row" className="px-6 py-4 text-center font-light">
                                             <span>
                                                 {time.startTime} - {time.endTime}
                                             </span>
                                         </th>
-                                        <td className="px-6 py-4">
+                                        <td className="px-6 py-4 text-center">
                                             {time.bookedBy ? (
                                                 <div>
-                                                    <button onClick={() => setIsProfileVisible(!isProfileVisible)} data-ripple-dark="true" data-popover-target="profile-info-popover" className="middle none center rounded-lg py-3 px-6 font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
-                                                        {time.bookedBy}
+                                                    <button onClick={() => setIsProfileVisible(!isProfileVisible)} data-ripple-dark="true" data-popover-target="profile-info-popover" className="middle none center rounded-lg py-3 px-6 font-sans text-sm font-semibold text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                                        {time.bookedBy.username}
                                                     </button>
                                                     <div className={`absolute max-w-[24rem] ${isProfileVisible ? 'visible' : 'invisible'} whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`} data-popover="profile-info-popover">
                                                         <div className="mb-2 flex items-center justify-between gap-2">
                                                             <UserCircleIcon className="relative inline-block h-11 w-11 rounded-full object-cover object-center" />
                                                             <div className="block font-sans text-sm font-normal leading-normal text-gray-700">
                                                                 <div>
-                                                                    {time.bookedBy}
+                                                                    {time.bookedBy.email}
                                                                 </div>
                                                                 <div>
-                                                                    {time.bookedBy}
+                                                                    {time.bookedBy.contactno}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             ) : (
-                                                <span>-</span>
+                                                <div className="text-center">-</div>
                                             )}
                                         </td>
-
                                     </tr>
                                 ))
                             ))}

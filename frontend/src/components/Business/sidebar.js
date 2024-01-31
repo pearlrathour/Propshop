@@ -9,7 +9,7 @@ export default function Sidebar() {
     let navigate = useNavigate();
     const [isSortDropdownOpen, setSortDropdownOpen] = useState(false);
     const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false);
-    const { businessId, businessName, email, contactNo, Location, Description, Image, setBusiness, clearBusiness } = useBusinessStore();
+    const { businessId, businessName, businessEmail, businessContactNo, Location, Description, Image, setBusiness, clearBusiness } = useBusinessStore();
     const { sortBy, searchBy, setsortBy, setsearchBy } = useFilterStore();
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [infoUpdatedrawer, setinfoUpdateDrawer] = useState(false);
@@ -17,7 +17,7 @@ export default function Sidebar() {
     const [timeSlots, setTimeSlots] = useState([{ startTime: '', endTime: '', bookedBy: null }]);
     const [searchName, setSearchName] = useState("");
     const [url, setUrl] = useState(window.location.href);
-
+    
     const toggleSortDropdown = () => {
         setSortDropdownOpen(!isSortDropdownOpen);
     };
@@ -57,6 +57,9 @@ export default function Sidebar() {
             handleDrawerToggle();
             window.location.reload();
         }
+        else{
+            alert(j.message);
+        }
     };
 
     const handleDateChange = (field, value) => {
@@ -71,7 +74,7 @@ export default function Sidebar() {
         else {
             const s = timeSlots[timeSlots.length - 1].startTime;
             const e = timeSlots[timeSlots.length - 1].endTime;
-            if (s !== "" && e != "")
+            if (s !=="" && e !== "")
                 setTimeSlots([...timeSlots, { startTime: '', endTime: '' }])
             else
                 alert("Please select start and end time of slot")
@@ -128,7 +131,7 @@ export default function Sidebar() {
             body: JSON.stringify({
                 id: businessId,
                 username: e.target.elements.username.value,
-                email: email,
+                email: businessEmail,
                 contactno: e.target.elements.contactno.value,
                 location: e.target.elements.location.value,
                 image: e.target.elements.image.value,
@@ -137,15 +140,15 @@ export default function Sidebar() {
         });
         const j = await response.json();
         if (j.success) {
-            setBusiness(businessId, j.username, j.email, j.contactno, j.location, j.description, j.image);
+            setBusiness(businessId, j.username, j.email, j.contactno, j.location, j.image, j.description);
             handleinfoUpdateDrawer();
             window.location.reload();
         }
     };
 
     return (
-        <div className="fixed h-screen">
-            <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-teal-700">
+        <div className="fixed h-screen z-40">
+            <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-teal-800">
                 <div>
                     <div className="flex justify-start py-6 px-3 items-center space-x-3">
                         <img className="w-11 h-11" src={logo} alt="" />
@@ -233,13 +236,13 @@ export default function Sidebar() {
                                         </div>
                                     )}
                                 </div>
-                                <div className="px-[9%] py-2.5 relative flex flex-col justify-start items-center border-gray-400 border-b">
-                                    <div className={`font-medium text-lg flex justify-between items-center w-full space-x-5 ${isSearchDropdownOpen ? "text-white" : "text-gray-300"}`} type="button" id="SearchDropdownButton" onClick={toggleSearchDropdown}>
-                                        Search Service
+                                <div className="px-[8%] py-2.5 relative flex flex-col justify-start items-center border-gray-400 border-b">
+                                    <div className="font-medium text-lg w-full text-gray-300" type="button" id="SearchDropdownButton" onClick={toggleSearchDropdown}>
+                                        Search
                                     </div>
-                                    <div className="flex flex-row w-full justify-between items-center rounded-lg bg-green-200">
-                                        <input type="text" className="w-[80%] bg-red-100 text-gray-400 hover:text-gray-800 hover:bg-gray-50 block px-4 py-2 text-sm" placeholder="Name" onChange={(e) => setSearchName(e.target.value)} role="menuitem" tabindex="-1" id="menu-item-1" />
-                                        <button onClick={() => handleSearchBy()}>
+                                    <div className="flex flex-row w-full justify-between items-center rounded-md bg-gray-300 my-1">
+                                        <input type="text" className="w-[82%] bg-gray-100 rounded-l-md text-gray-400 hover:text-gray-800 hover:bg-gray-50 focus:outline-none block px-4 py-2 text-sm" placeholder="Service Name" onChange={(e) => setSearchName(e.target.value)} role="menuitem" tabindex="-1" id="menu-item-1" />
+                                        <button onClick={() => handleSearchBy()} className="mr-1">
                                             <MagnifyingGlassIcon className="h-6 w-6 text-black" />
                                         </button>
                                     </div>
@@ -254,7 +257,7 @@ export default function Sidebar() {
                         <div className="h-8 w-8 rounded-md shadow-gray-700 overflow-hidden">
                             <img className="w-full h-full object-cover" src={Image} alt="" />
                         </div>
-                        <div className="text-base font-semibold">{businessName}</div>
+                        <div className="text-base font-semibold text-white">{businessName}</div>
                         <button className="cursor-pointer" type="button" onClick={handleinfoUpdateDrawer} data-drawer-target="drawer-info-update" data-drawer-show="drawer-info-update" aria-controls="drawer-info-update">
                             <Cog6ToothIcon className="h-7 w-7 gear-rotate" />
                         </button>
@@ -275,11 +278,11 @@ export default function Sidebar() {
                                 </div>
                                 <div>
                                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-700">Email Address</label>
-                                    <input type="email" id="email" defaultValue={email} className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" placeholder="Email Address" disabled />
+                                    <input type="email" id="email" defaultValue={businessEmail} className="bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg block w-full p-2.5" placeholder="Email Address" disabled />
                                 </div>
                                 <div>
                                     <label htmlFor="contactno" className="block mb-2 text-sm font-medium text-gray-700">Contact Number</label>
-                                    <input type="text" id="contactno" defaultValue={contactNo} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Contact Number" required />
+                                    <input type="text" id="contactno" defaultValue={businessContactNo} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " placeholder="Contact Number" required />
                                 </div>
                                 <div>
                                     <label htmlFor="location" className="block mb-2 text-sm font-medium text-gray-700">Location</label>
@@ -293,7 +296,7 @@ export default function Sidebar() {
                                     <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">Description</label>
                                     <textarea id="description" defaultValue={Description} rows="5" className="block p-3 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  " placeholder="Description"></textarea>
                                 </div>
-                                <button type="submit" className="text-white justify-center flex items-center bg-blue-600 hover:bg-blue-700 w-full focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                                <button type="submit" className="text-white justify-center flex items-center bg-teal-600 hover:bg-teal-700 w-full focus:ring-4 focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
                                     Update Details
                                 </button>
                             </form>
