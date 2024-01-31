@@ -20,7 +20,7 @@ export default function ServiceProfile() {
     };
 
     async function loadData() {
-        const response = await fetch(`http://localhost:4000/business/myservices/${id}?sortBy=`, {
+        const response = await fetch(`https://propshop-api.onrender.com/business/myservices/${id}?sortBy=`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,7 +38,6 @@ export default function ServiceProfile() {
             setService(data);
         }
     }
-    console.log("S",service);
 
     useEffect(() => {
         loadData();
@@ -47,7 +46,7 @@ export default function ServiceProfile() {
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/business/deleteservice", {
+        const response = await fetch("https://propshop-api.onrender.com/business/deleteservice", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -66,7 +65,7 @@ export default function ServiceProfile() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/business/updateservice", {
+        const response = await fetch("https://propshop-api.onrender.com/business/updateservice", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -116,7 +115,7 @@ export default function ServiceProfile() {
     // const handleUserInfo = async (userId, e) => {
     //     e.preventDefault();
 
-    //     const response = await fetch("http://localhost:4000/business/userinfo", {
+    //     const response = await fetch("https://propshop-api.onrender.com/business/userinfo", {
     //         method: 'POST',
     //         headers: {
     //             'Content-Type': 'application/json'

@@ -10,7 +10,7 @@ export default function Carousel() {
 
     useEffect(() => {
         async function loadServices() {
-            const response = await fetch('http://localhost:4000/user/services', {
+            const response = await fetch('https://propshop-api.onrender.com/user/services', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -24,8 +24,6 @@ export default function Carousel() {
         }
         loadServices();
     }, []);
-
-    console.log("C",services);
 
     const itemsPerPage = 4;
     const totalPages = Math.ceil(services.length / itemsPerPage);

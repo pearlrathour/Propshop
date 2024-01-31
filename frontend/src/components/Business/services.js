@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "./card";
 import { useBusinessStore, useFilterStore } from '../../store';
 
@@ -12,7 +12,7 @@ export default function Services() {
         async function loadData() {
             const sortByFilter= sortBy? `${searchBy?'&':'?'}sortBy=${sortBy}` : '';
             const searchByFilter= searchBy? `${sortBy?'&':'?'}searchBy=${searchBy}` : '';
-            const response = await fetch(`http://localhost:4000/business/myservices${sortByFilter}${searchByFilter}`, {
+            const response = await fetch(`https://propshop-api.onrender.com/business/myservices${sortByFilter}${searchByFilter}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

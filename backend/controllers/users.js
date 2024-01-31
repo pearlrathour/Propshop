@@ -12,7 +12,7 @@ module.exports.signup = async (req, res) => {
   }
   catch (e) {
     console.log(e);
-    res.json({ success: false, message: "User Signup Error" });
+    res.json({ success: false, message: "User Signup Error"});
   }
 };
 

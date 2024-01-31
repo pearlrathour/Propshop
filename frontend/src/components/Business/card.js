@@ -2,7 +2,6 @@ import React from "react";
 
 export default function Card(props) {
     const { name = "Create a Service Now", image = "https://www.artisticmoods.com/wp-content/uploads/tropicalia_by_mathiole-d31lvne.jpg", price = "", date = {} } = props.service;
-    console.log("O",props);
     return (
         <div className="p-4 transform duration-500">
             <div className="flex flex-col bg-teal-50 shadow-md mx-auto transform hover:-translate-y-1 duration-300 rounded-sm hover:shadow-xl">

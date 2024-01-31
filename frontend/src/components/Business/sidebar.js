@@ -37,7 +37,7 @@ export default function Sidebar() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/business/addservice", {
+        const response = await fetch("https://propshop-api.onrender.com/business/addservice", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ export default function Sidebar() {
     const handleLogout = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/business/signout", {
+        const response = await fetch("https://propshop-api.onrender.com/business/signout", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -111,7 +111,6 @@ export default function Sidebar() {
         const j = await response.json();
         if (j.success) {
             clearBusiness();
-            console.log(businessId);
             navigate("/");
             setUrl(window.location.href);
         }
@@ -123,7 +122,7 @@ export default function Sidebar() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/business/updateinfo", {
+        const response = await fetch("https://propshop-api.onrender.com/business/updateinfo", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

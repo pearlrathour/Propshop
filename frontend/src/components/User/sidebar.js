@@ -8,19 +8,14 @@ import '.././../index.css';
 export default function Sidebar() {
     let navigate = useNavigate();
     const [isSortDropdownOpen, setSortDropdownOpen] = useState(false);
-    const [isSearchDropdownOpen, setSearchDropdownOpen] = useState(false);
     const [infoUpdatedrawer, setinfoUpdateDrawer] = useState(false);
     const { userId, userName, email, contactNo, setUser, clearUser } = useUserStore();
     const { sortBy, searchBy, setsortBy, setsearchBy } = useFilterStore();
     const [searchName, setSearchName] = useState("");
-    const [url, setUrl] = useState(window.location.href);
+    const url= window.location.href;
 
     const toggleSortDropdown = () => {
         setSortDropdownOpen(!isSortDropdownOpen);
-    };
-
-    const toggleSearchDropdown = () => {
-        setSearchDropdownOpen(!isSearchDropdownOpen);
     };
 
     const handleSortBy = async (sortFilter) => {
@@ -42,7 +37,7 @@ export default function Sidebar() {
     const handleLogout = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/user/signout", {
+        const response = await fetch("https://propshop-api.onrender.com/user/signout", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -61,7 +56,7 @@ export default function Sidebar() {
     const handleSetting = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("http://localhost:4000/user/updateinfo", {
+        const response = await fetch("https://propshop-api.onrender.com/user/updateinfo", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,10 +70,7 @@ export default function Sidebar() {
         });
         const j = await response.json();
         if (j.success) {
-            console.log("B", { userId, userName, email, contactNo });
             setUser(userId, j.username, j.email, j.contactno);
-            console.log("A", { userId, userName, email, contactNo })
-            console.log({ userId, userName, email, contactNo });
             handleinfoUpdateDrawer();
             window.location.reload();
         }

@@ -2,8 +2,8 @@ import React from "react";
 import { MapPinIcon } from '@heroicons/react/24/solid';
 
 export default function Card(props) {
-    const { name = "Service Name", businessId = {}, image= "https://www.artisticmoods.com/wp-content/uploads/tropicalia_by_mathiole-d31lvne.jpg", price = "", description=""} = props.service;
-    const { username = "Businessname", location="Loc"} = businessId;
+    const { name = "Service Name", businessId = {}, image= "https://www.artisticmoods.com/wp-content/uploads/tropicalia_by_mathiole-d31lvne.jpg", price = ""} = props.service;
+    const { username = "Businessname", location="Location"} = businessId;
 
     return (
         <div className="p-4 transform duration-500">
