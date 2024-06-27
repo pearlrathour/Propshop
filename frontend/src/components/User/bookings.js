@@ -7,7 +7,7 @@ export default function Bookings() {
     const [appointments, setAppointments] = useState([]);
     const { userId } = useUserStore();
 
-    useEffect(() => {4
+    useEffect(() => {
         async function loadAppointments() {
             const response = await fetch('https://propshop-api.onrender.com/user/appointments', {
                 method: 'POST',
