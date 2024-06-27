@@ -38,7 +38,7 @@ export default function BusinessSignup() {
     return (
         <div className="bg-slate-100 py-10">
             <div className="flex flex-col items-center justify-center px-8 py-8 mx-auto md:h-full lg:py-0">
-                <Link to="/" className="flex items-center mb-6 text-4xl font-bold text-teal-700 tracking-tight">
+                <Link to="/" className="flex items-center mb-6 text-4xl font-bold text-sky-800 tracking-tight">
                     <img className="w-10 h-10 mr-2" src={logo} alt="" />
                     PROPSHOP
                 </Link>
@@ -69,12 +69,12 @@ export default function BusinessSignup() {
                             <div>
                                 <input type="password" name="password" id="password" placeholder="Password" className="bg-gray-50 border border-zinc-100 text-gray-900 sm:text-base rounded-md block w-full p-2.5 dark:bg-transparent dark:border-gray-300 dark:placeholder-gray-500 focus:placeholder-gray-400" required />
                             </div>
-                            <button type="submit" className="w-full text-white bg-teal-600 hover:bg-teal-700/90 font-medium rounded-md text-sm px-5 py-2.5 text-center">
+                            <button type="submit" className="w-full text-white bg-sky-700 hover:bg-sky-800 font-medium rounded-md text-sm px-5 py-2.5 text-center">
                                 Create an account
                             </button>
                             <p className="text-sm text-center font-light text-gray-500 dark:text-gray-400">
                                 Already have an account?
-                                <Link to="/business/signin" className="font-medium text-teal-600 hover:underline cursor-pointer ml-2">
+                                <Link to="/business/signin" className="font-medium text-sky-700 hover:underline cursor-pointer ml-2">
                                     Sign In
                                 </Link>
                             </p>

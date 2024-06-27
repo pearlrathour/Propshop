@@ -32,7 +32,7 @@ export default function Services() {
     }, [sortBy,searchBy]);
 
     return (
-        <div className={`flex flex-row flex-wrap py-6 justify-start items-start text-3xl text-gray-400 ${services.length ? "" : "bg-teal-50"}`}>
+        <div className={`flex flex-row flex-wrap py-6 justify-start items-start text-3xl text-gray-400 ${services.length ? "" : "bg-blue-50"}`}>
             {services.length > 0 ? (
                 services.map((service) => (
                     <Link key={service._id} to={`/business/myservices/${service._id}`} className="basis-1/4 cursor-pointer">

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { useBusinessStore, useFilterStore } from '../../store';
-import logo from '../../assets/images/logo1.png';
+import logo from '../../assets/images/logo2.png';
 import { Squares2X2Icon, PlusIcon, ChevronDownIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon, CalendarDaysIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import '../../index.css';
 
@@ -147,11 +147,11 @@ export default function Sidebar() {
 
     return (
         <div className="fixed h-screen z-40">
-            <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-teal-800">
+            <div className="flex flex-col justify-between items-start h-full sm:w-64 bg-sky-900">
                 <div>
                     <div className="flex justify-start py-6 px-3 items-center space-x-3">
                         <img className="w-11 h-11" src={logo} alt="" />
-                        <p className="text-3xl font-bold tracking-tight leading-6 text-teal-100">PROPSHOP</p>
+                        <p className="text-3xl font-bold tracking-tight leading-6 text-sky-100">PROPSHOP</p>
                     </div>
                     <div className="px-3 w-full">
                         <div className="pl-[7%] flex flex-col justify-start items-center w-full border-gray-400 border-b space-y-2.5 pb-3">
@@ -206,11 +206,11 @@ export default function Sidebar() {
                                                 <input type="time" id={`endtime-${index}`} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " value={slot.endTime} onChange={(e) => handleTimeChange(index, 'endTime', e.target.value)} required />
                                             </div>
                                         ))}
-                                        <button type="button" onClick={addTimeSlot} className="text-teal-600 hover:underline cursor-pointer focus:outline-none mt-2">
+                                        <button type="button" onClick={addTimeSlot} className="text-sky-700 hover:underline cursor-pointer focus:outline-none mt-2">
                                             Add Time Slot
                                         </button>
                                     </div>
-                                    <button type="submit" className="text-white justify-center flex items-center bg-teal-600 hover:bg-teal-700 w-full focus:ring-4 focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
+                                    <button type="submit" className="text-white justify-center flex items-center bg-sky-700 hover:bg-sky-900 w-full focus:ring-4 focus:ring-sky-900 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
                                         Add Service
                                     </button>
                                 </form>
@@ -226,11 +226,11 @@ export default function Sidebar() {
                                         <ChevronDownIcon className="h-6 w-6" />
                                     </button>
                                     {isSortDropdownOpen && (
-                                        <div id="sortdropdown" className="relative my-2 right-0 z-10 w-50 origin-top-right rounded-md bg-teal-700 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                        <div id="sortdropdown" className="relative my-2 right-0 z-10 w-50 origin-top-right rounded-md bg-sky-800 shadow-xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <div className="py-1" role="none">
-                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-teal-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("priceASC")} role="menuitem" tabindex="-1" id="menu-item-1">Price(Low to High)</button>
-                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-teal-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("priceDSC")} role="menuitem" tabindex="-1" id="menu-item-2">Price(High to Low)</button>
-                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-teal-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("Date")} role="menuitem" tabindex="-1" id="menu-item-2">Date</button>
+                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-blue-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("priceASC")} role="menuitem" tabindex="-1" id="menu-item-1">Price(Low to High)</button>
+                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-blue-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("priceDSC")} role="menuitem" tabindex="-1" id="menu-item-2">Price(High to Low)</button>
+                                                <button className="text-gray-300 w-full hover:text-gray-800 hover:bg-blue-50 block px-4 py-2 text-sm" onClick={() => handleSortBy("Date")} role="menuitem" tabindex="-1" id="menu-item-2">Date</button>
                                             </div>
                                         </div>
                                     )}
@@ -294,7 +294,7 @@ export default function Sidebar() {
                                     <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-700">Description</label>
                                     <textarea id="description" defaultValue={Description} rows="5" className="block p-3 mb-4 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  " placeholder="Description"></textarea>
                                 </div>
-                                <button type="submit" className="text-white justify-center flex items-center bg-teal-600 hover:bg-teal-700 w-full focus:ring-4 focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
+                                <button type="submit" className="text-white justify-center flex items-center bg-sky-700 hover:bg-sky-800 w-full focus:ring-4 focus:ring-sky-800 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
                                     Update Details
                                 </button>
                             </form>

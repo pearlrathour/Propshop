@@ -207,11 +207,11 @@ export default function ServiceProfile() {
                                                 <input type="time" id={`endtime-${index}`} defaultValue={slot.endTime} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 " onChange={(e) => handleTimeChange(index, 'endTime', e.target.value)} required />
                                             </div>
                                         ))}
-                                        <button type="button" onClick={addTimeSlot} className="text-teal-600 text-base hover:underline cursor-pointer focus:outline-none">
+                                        <button type="button" onClick={addTimeSlot} className="text-sky-700 text-base hover:underline cursor-pointer focus:outline-none">
                                             Add Time Slot
                                         </button>
                                     </div>
-                                    <button type="submit" className="text-white justify-center flex items-center bg-teal-600 hover:bg-teal-700 w-full focus:ring-4 focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
+                                    <button type="submit" className="text-white justify-center flex items-center bg-sky-700 hover:bg-sky-800 w-full focus:ring-4 focus:ring-sky-700 font-medium rounded-lg text-sm px-5 py-2.5 mb-2">
                                         Update Service</button>
                                 </form>
                             )}
@@ -226,7 +226,7 @@ export default function ServiceProfile() {
 
                 <div className="overflow-x-auto w-[40%] rounded-lg shadow-md ml-[45%] my-[3%]">
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                        <thead className="text-xs text-gray-600 uppercase bg-green-100">
+                        <thead className="text-xs text-gray-600 uppercase bg-blue-200">
                             <tr>
                                 <th scope="col" className="py-3 text-center">
                                     Date
@@ -242,7 +242,7 @@ export default function ServiceProfile() {
                         <tbody>
                             {service && service.timeslots && service.timeslots.map((slot, index) => (
                                 slot.timeslot.map((time, timeIndex) => (
-                                    <tr key={`${index}-${timeIndex}`} className="bg-transparent text-gray-600 hover:bg-green-50">
+                                    <tr key={`${index}-${timeIndex}`} className="bg-transparent text-gray-600 hover:bg-blue-50">
                                         {timeIndex === 0 ? (
                                             <th scope="row" className="px-6 py-4 text-center font-medium">
                                                 {slot.date}

@@ -88,7 +88,7 @@ export default function ServiceProfile() {
                     <div className="h-[65%] object-cover overflow-hidden">
                         <img className="h-full w-full" src={business.image} alt="" />
                     </div>
-                    <div className="flex flex-col h-[35%] justify-start bg-indigo-50 space-y-2 p-6">
+                    <div className="flex flex-col h-[35%] justify-start bg-blue-50 space-y-2 p-6">
                         <div className="flex flex-col items-center">
                             <div className="text-xl font-semibold">{business.username}</div>
                             <div className="">{business.description}</div>
@@ -107,7 +107,7 @@ export default function ServiceProfile() {
                         </div>
                     </div>
                 </div>
-                <div className="h-[70%] w-[50%] my-[3%] mx-[10%] flex flex-row overflow-hidden bg-indigo-50 border border-gray-300 shadow-xl rounded-lg">
+                <div className="h-[70%] w-[50%] my-[3%] mx-[10%] flex flex-row overflow-hidden bg-blue-50 border border-gray-300 shadow-xl rounded-lg">
                     <div className="w-full border-r border-gray-300">
                         <div className="h-[75%] object-cover overflow-hidden">
                             <img className="h-full w-full" src={service.image} alt="" />
@@ -137,7 +137,7 @@ export default function ServiceProfile() {
                                 </div>
                             )}
 
-                            <button type="submit" className="text-white bg-teal-600 hover:bg-teal-700 font-medium rounded-lg text-sm w-full px-3.5 py-1.5 my-4">
+                            <button type="submit" className="text-white bg-sky-700 hover:bg-sky-800 font-medium rounded-lg text-sm w-full px-3.5 py-1.5 my-4">
                                 Book Slot
                             </button>
                         </form>
