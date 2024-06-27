@@ -10,7 +10,7 @@ export default function BusinessSignup() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       
-      const response= await fetch("https://propshop-api.onrender.com/business/signup", {
+      const response= await fetch('http://localhost:4000/business/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

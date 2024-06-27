@@ -84,6 +84,7 @@ module.exports.updateInfo = async (req, res) => {
 
 module.exports.createService = async (req, res) => {
   const { id, name, image, price, description, date, timeslots } = req.body;
+  console.log(req.body)
   try {
     const business = await Business.findById(id);
 
@@ -154,19 +155,62 @@ module.exports.fetchService = async (req, res) => {
   else {
     business = await Business.findById(id).populate('services');
   }
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const currTime = new Date();
+  const currentTime = `${currTime.getHours()}:${currTime.getMinutes()}`;
+  
+  business.services.forEach(service => {
+    const filteredTimeslots= service.timeslots.filter((d)=>{
+      if( d.date < currentDate) return 0;
+      else if (d.date > currentDate) return 1;
+      else {
+        let filteredTime = d.timeslot.filter((slot) => {
+          return slot.endTime >= currentTime;
+        });
+        d.timeslot = filteredTime;
+        return filteredTime.length>0;
+      }
+    });
+    service.timeslots= filteredTimeslots;
+  });
+  
+  business.services= business.services.filter((s)=>{
+    return s.timeslots.length>0;
+  });
+  
   res.json({ success: true, data: business.services});
 };
 
 module.exports.fetchServiceProfile = async (req, res) => {
   const { businessId, serviceId } = req.body;
   const service = await Service.findById(serviceId);
-  
+  let currdate= new Date().toISOString().split("T")[0];
+
   for(let i=0; i<service.timeslots.length; i++){
-    let slot= service.timeslots[i].timeslot;
-    for(let j=0; j<slot.length; j++){
+    let slot = service.timeslots[i].timeslot;
+    for (let j = 0; j < slot.length; j++) {
       await Service.populate(slot[j], { path: 'bookedBy', select: 'username email contactno' });
     }
   }
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const currTime = new Date();
+  const currentTime = `${currTime.getHours()}:${currTime.getMinutes()}`;
+  
+  const filteredDateTime= service.timeslots.filter((d)=>{
+    if( d.date < currentDate) return 0;
+    else if(d.date > currentDate) return 1;
+    else {
+      let filteredTime = d.timeslot.filter((slot) => {
+        return slot.endTime >= currentTime;
+      });
+      d.timeslot = filteredTime;
+      return 1;
+    }
+  });
+  
+  service.timeslots= filteredDateTime;
   res.json({ success: true, data: service });
 };
 

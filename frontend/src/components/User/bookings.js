@@ -7,9 +7,9 @@ export default function Bookings() {
     const [appointments, setAppointments] = useState([]);
     const { userId } = useUserStore();
 
-    useEffect(() => {
+    useEffect(() => {4
         async function loadAppointments() {
-            const response = await fetch('https://propshop-api.onrender.com/user/appointments', {
+            const response = await fetch('http://localhost:4000/user/appointments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ export default function Bookings() {
     const handleDelete = async (appointmentId, serviceId, date, timeslot, e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/user/cancelappointment", {
+        const response = await fetch('http://localhost:4000/user/cancelappointment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

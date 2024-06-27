@@ -14,6 +14,7 @@ router.route('/business/signin')
 router.route('/business/signout')
     .post(business.signout);
 
+
 router.route('/business/info')
     .post(business.fetchInfo);
 

@@ -7,7 +7,7 @@ import { UserCircleIcon, CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24
 export default function ServiceProfile() {
     const { id } = useParams();
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const [isProfileVisible, setIsProfileVisible] = useState(false);
+    const [isProfileVisible, setIsProfileVisible] = useState({});
     const [service, setService] = useState([]);
     // const [userInfo, setUserInfo] = useState({});
     const [dateSlot, setDateSlot] = useState({ startDate: '', endDate: '' });
@@ -15,12 +15,24 @@ export default function ServiceProfile() {
     const { businessId } = useBusinessStore();
     let navigate = useNavigate();
 
+    const toggleVisibility= (s)=>{
+        const newVisibilityString= JSON.stringify(isProfileVisible);
+        const newVisibility= JSON.parse(newVisibilityString);
+        if(newVisibility.hasOwnProperty(s)){
+            delete newVisibility[s];
+        }
+        else{
+            newVisibility[s]= true;
+        }
+        setIsProfileVisible(newVisibility);
+    }
+
     const handleDrawerToggle = () => {
         setDrawerOpen(!drawerOpen);
     };
 
     async function loadData() {
-        const response = await fetch(`https://propshop-api.onrender.com/business/myservices/${id}?sortBy=`, {
+        const response = await fetch('http://localhost:4000/business/myservices/${id}?sortBy=', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -34,7 +46,7 @@ export default function ServiceProfile() {
         if (j.success) {
             let data = await j.data;
             setDateSlot(data.date);
-            setTimeSlots(data.timeslots[0].timeslot);
+            setTimeSlots(data.timeslots.length >0 ? data.timeslots[0].timeslot : []);
             setService(data);
         }
     }
@@ -46,7 +58,7 @@ export default function ServiceProfile() {
     const handleDelete = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/business/deleteservice", {
+        const response = await fetch('http://localhost:4000/business/deleteservice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -65,7 +77,7 @@ export default function ServiceProfile() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/business/updateservice", {
+        const response = await fetch('http://localhost:4000/business/updateservice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -246,10 +258,10 @@ export default function ServiceProfile() {
                                         <td className="px-6 py-4 text-center">
                                             {time.bookedBy ? (
                                                 <div>
-                                                    <button onClick={() => setIsProfileVisible(!isProfileVisible)} data-ripple-dark="true" data-popover-target="profile-info-popover" className="middle none center rounded-lg py-3 px-6 font-sans text-sm font-semibold text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+                                                    <button onClick={() => toggleVisibility(`${index}-${timeIndex}`)} data-ripple-dark="true" data-popover-target="profile-info-popover" className="middle none center rounded-lg py-3 px-6 font-sans text-sm font-semibold text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
                                                         {time.bookedBy.username}
                                                     </button>
-                                                    <div className={`absolute max-w-[24rem] ${isProfileVisible ? 'visible' : 'invisible'} whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`} data-popover="profile-info-popover">
+                                                    <div className={`absolute max-w-[24rem] ${isProfileVisible[`${index}-${timeIndex}`] ? 'visible' : 'invisible'} whitespace-normal break-words rounded-lg border border-blue-gray-50 bg-white p-3 font-sans text-sm font-normal text-blue-gray-500 shadow-lg shadow-blue-gray-500/10 focus:outline-none`} data-popover="profile-info-popover">
                                                         <div className="mb-2 flex items-center justify-between gap-2">
                                                             <UserCircleIcon className="relative inline-block h-11 w-11 rounded-full object-cover object-center" />
                                                             <div className="block font-sans text-sm font-normal leading-normal text-gray-700">

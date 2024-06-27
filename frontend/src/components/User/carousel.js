@@ -10,7 +10,7 @@ export default function Carousel() {
 
     useEffect(() => {
         async function loadServices() {
-            const response = await fetch('https://propshop-api.onrender.com/user/services', {
+            const response = await fetch('http://localhost:4000/user/services', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

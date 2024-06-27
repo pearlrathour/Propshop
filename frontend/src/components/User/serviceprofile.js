@@ -14,7 +14,7 @@ export default function ServiceProfile() {
     const [timeSlot, settimeSlot] = useState({ startTime: '', endTime: '', bookedBy: ''});
 
     async function loadService() {
-        const response = await fetch(`https://propshop-api.onrender.com/user/services/${id}`, {
+        const response = await fetch(`http://localhost:4000/user/services/${id}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default function ServiceProfile() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/user/bookappointment", {
+        const response = await fetch('http://localhost:4000/user/bookappointment', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -103,8 +103,32 @@ module.exports.fetchServices = async (req, res) => {
     }
   }
   else {
-    services = await Service.find({}, 'id name image price businessId').populate('businessId', 'username location');
+    services = await Service.find({}, 'id name image price timeslots businessId').populate('businessId', 'username location');
   }
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const currTime = new Date();
+  const currentTime = `${currTime.getHours()}:${currTime.getMinutes()}`;
+
+  services.forEach(service => {
+    const filteredTimeslots= service.timeslots.filter((d)=>{
+      if( d.date < currentDate) return 0;
+      else if (d.date > currentDate) return 1;
+      else {
+        let filteredTime = d.timeslot.filter((slot) => {
+          return slot.endTime >= currentTime && slot.bookedBy==null;
+        });
+        d.timeslot = filteredTime;
+        return filteredTime.length>0;
+      }
+    });
+    service.timeslots= filteredTimeslots;
+  });
+  
+  services= services.filter((s)=>{
+    return s.timeslots.length>0;
+  });
+
   res.json({ success: true, data: services });
 };
 
@@ -113,6 +137,18 @@ module.exports.fetchServiceProfile = async (req, res) => {
   const service = await Service.findById(serviceId);
   const id = service.businessId;
   const business = await Business.findById(id).select('image username description contactno email location');
+
+  const currentDate = new Date().toISOString().split("T")[0];
+  const currTime = new Date();
+  const currentTime = `${currTime.getHours()}:${currTime.getMinutes()}`;
+
+  const filteredDateTime= service.timeslots.filter((d)=>{
+    if(d.date >= currentDate) return 1;
+  });
+  
+  service.timeslots= filteredDateTime;
+  service.date.startDate= (service.date.startDate>=currentDate? service.date.startDate : curentDate);
+
   res.json({ success: true, servicedata: service, businessdata: business });
 };
 
@@ -179,7 +215,17 @@ module.exports.fetchAppointments = async (req, res) => {
       }
       appointment.push(obj);
     }
-    res.json({ success: true, data: appointment });
+    
+    const currentDate = new Date().toISOString().split("T")[0];
+    const currTime = new Date();
+    const currentTime = `${currTime.getHours()}:${currTime.getMinutes()}`;
+  
+    let filteredApp= appointment.filter((app)=>{
+      if(app.date>currentDate) return 1;
+      return app.date==currentDate && app.timeslot.endTime>=currentTime;
+    });
+    
+    res.json({ success: true, data: filteredApp });
   }
   catch (err) {
     console.log(err);

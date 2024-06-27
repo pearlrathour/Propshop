@@ -37,7 +37,7 @@ export default function Sidebar() {
     const handleLogout = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/user/signout", {
+        const response = await fetch('http://localhost:4000/user/signout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ export default function Sidebar() {
     const handleSetting = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/user/updateinfo", {
+        const response = await fetch('http://localhost:4000/user/updateinfo', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

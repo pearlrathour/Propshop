@@ -102,7 +102,7 @@ export default function Sidebar() {
     const handleLogout = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/business/signout", {
+        const response = await fetch('http://localhost:4000/business/signout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -122,7 +122,7 @@ export default function Sidebar() {
     const handleUpdate = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("https://propshop-api.onrender.com/business/updateinfo", {
+        const response = await fetch('http://localhost:4000/business/updateinfo', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -217,7 +217,7 @@ export default function Sidebar() {
                             </div>
                         </div>
 
-                        {(url.includes('myservices') || url.includes('myservices?')) ?
+                        {(url.includes('/myservices/') && !url.endsWith('/:id')) ? null :
                             (<div>
                                 <div className="px-[9%] py-2.5 relative border-gray-400 border-b">
                                     <button className={`flex justify-between items-center w-full font-medium text-lg ${isSortDropdownOpen ? "text-white" : "text-gray-300"}
@@ -246,8 +246,7 @@ export default function Sidebar() {
                                         </button>
                                     </div>
                                 </div>
-                            </div>)
-                            : (<div></div>)}
+                            </div>)}
 
                     </div>
                 </div>

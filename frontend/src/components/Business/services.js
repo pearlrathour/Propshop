@@ -7,12 +7,12 @@ export default function Services() {
     const [services, setServices] = useState([]);
     const { sortBy, searchBy }= useFilterStore();
     const { businessId } = useBusinessStore();
-
+    
     useEffect(() => {
         async function loadData() {
             const sortByFilter= sortBy? `${searchBy?'&':'?'}sortBy=${sortBy}` : '';
             const searchByFilter= searchBy? `${sortBy?'&':'?'}searchBy=${searchBy}` : '';
-            const response = await fetch(`https://propshop-api.onrender.com/business/myservices${sortByFilter}${searchByFilter}`, {
+            const response = await fetch(`http://localhost:4000/business/myservices${sortByFilter}${searchByFilter}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -21,8 +21,9 @@ export default function Services() {
                     id: businessId
                 })
             });
-
+            
             const j = await response.json();
+            console.log(j);
             if (j.success) {
                 setServices(j.data);
             }
